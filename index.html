@@ -78,13 +78,13 @@
         
         .blob-1 {
             width: 50vw; height: 50vw;
-            background: rgba(0, 82, 255, 0.2); /* Cobalt */
+            background: rgba(0, 82, 255, 0.2);
             top: -10%; left: -10%;
         }
         
         .blob-2 {
             width: 40vw; height: 40vw;
-            background: rgba(100, 0, 255, 0.15); /* Viola/Blu scuro per profondità */
+            background: rgba(100, 0, 255, 0.15);
             bottom: -10%; right: -10%;
             animation-delay: -7s;
         }
@@ -94,7 +94,7 @@
             inset: 0;
             z-index: 1;
             background: rgba(17, 17, 17, 0.2);
-            backdrop-filter: blur(50px); /* Diffonde la luce dei blob */
+            backdrop-filter: blur(50px);
             -webkit-backdrop-filter: blur(50px);
         }
 
@@ -164,7 +164,6 @@
                 </span>
             </a>
             
-            <!-- Link di navigazione visibili allo scendere della barra -->
             <div class="hidden lg:flex gap-8 font-medium text-sm tracking-wide text-offwhite/80">
                 <a href="#system" class="hover:text-offwhite transition-colors duration-200">Metodologia</a>
                 <a href="#calculator" class="hover:text-cobalt transition-colors duration-200">Calcolatore 1RM</a>
@@ -195,8 +194,8 @@
             <div class="glass-overlay pointer-events-none"></div>
 
             <!-- TESTO BACKGROUND SCENA 2 (Z-5: Dietro l'atomo) -->
-            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none">
-                <h2 class="text-[8vw] md:text-[6.5rem] lg:text-[9rem] font-black uppercase tracking-widest text-outline whitespace-nowrap select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)]">
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none w-full px-4 overflow-hidden">
+                <h2 class="text-[8vw] md:text-[6vw] lg:text-[5vw] font-black uppercase tracking-widest text-outline whitespace-nowrap select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] w-full text-center">
                     LEVER.COACHING
                 </h2>
             </div>
@@ -215,7 +214,7 @@
 
         </section>
 
-        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente invisibile, appare dopo l'esplosione -->
+        <!-- RESTO DEL SITO (SCENA 2) -->
         <div id="rest-of-page" class="opacity-0 relative z-30 bg-asphalt">
             
             <!-- FEATURE BANNER: BARBELL (Rimanda al calcolatore) -->
