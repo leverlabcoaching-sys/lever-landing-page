@@ -59,16 +59,12 @@
             border: 1px solid rgba(237, 237, 237, 0.1);
         }
 
-        #canvas-container {
-            position: relative;
-            z-index: 0;
-        }
-        
-        #canvas-container::after {
+        /* Sfondo radiale spostato sulla hero per non spegnere i testi */
+        #hero-section::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(0,82,255,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(0,82,255,0.08) 0%, transparent 60%);
             pointer-events: none;
             z-index: 1;
         }
@@ -100,7 +96,6 @@
             box-shadow: 0 0 10px rgba(0, 82, 255, 0.2);
         }
 
-        /* Rimuove frecce input number */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -110,7 +105,7 @@
             -moz-appearance: textfield;
         }
 
-        /* Gestione lettere animate */
+        /* Gestione lettere animate per GSAP */
         .letter {
             display: inline-block;
             will-change: transform, opacity;
@@ -119,9 +114,9 @@
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
-    <!-- NAV (Fixed) -->
-    <nav class="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none">
-        <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-4 rounded-2xl pointer-events-auto">
+    <!-- NAV (Inizialmente nascosta da GSAP) -->
+    <nav id="main-nav" class="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none opacity-0 translate-y-[-100px]">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-4 rounded-2xl pointer-events-auto shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
             
             <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
                 <span class="text-3xl font-black tracking-widest uppercase select-none text-cobalt transition-all duration-300 group-hover:drop-shadow-[0_0_12px_#0052FF]">
@@ -148,42 +143,33 @@
 
     <main class="flex-grow">
         
-        <!-- HERO SECTION (SCENA 1) - Diventerà Pinned -->
-        <section id="hero-section" class="relative w-full h-screen flex items-center overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
+        <!-- HERO SECTION (SCENA 1) - Struttura Centrata -->
+        <section id="hero-section" class="relative w-full h-screen overflow-hidden flex items-center justify-center bg-asphalt">
+            
+            <!-- Contenitore Testo (Sta dietro/attorno al 3D) -->
+            <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 w-full px-6 pointer-events-none">
                 
-                <div class="flex flex-col justify-center max-w-2xl mt-12 lg:mt-0 relative">
-                    <!-- Titolo Diviso per l'animazione -->
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-                        <div id="title-line1">Ingegnerizza</div>
-                        <div id="title-line2" class="text-offwhite/40">I Risultati.</div>
-                    </h1>
-                    
-                    <!-- Elementi che sfumeranno via -->
-                    <div id="hero-desc">
-                        <p class="text-lg md:text-xl font-normal text-offwhite/70 leading-relaxed mb-12 max-w-md">
-                            Sblocca il tuo potenziale con un approccio basato sulla biomeccanica. Rimuoviamo il caso dalla programmazione per massimizzare la resa sotto carico.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-4">
-                            <a href="#assessment" class="btn-primary inline-flex items-center justify-center bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest px-10 py-5 rounded-none shadow-[0_0_20px_rgba(0,82,255,0.3)]">
-                                Inizia il Percorso
-                            </a>
-                            <a href="#calculator" class="group inline-flex items-center justify-center border border-offwhite/20 hover:border-cobalt text-offwhite hover:text-cobalt font-bold text-sm uppercase tracking-widest px-8 py-5 rounded-none transition-colors">
-                                Calcola 1RM <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="canvas-container" class="h-[40vh] lg:h-[70vh] min-h-[400px] flex items-center justify-center relative">
-                    <!-- ThreeJS canvas injected here -->
-                </div>
+                <!-- Titolo Gigante diviso per GSAP -->
+                <div id="title-lever" class="text-cobalt font-black text-7xl md:text-9xl uppercase tracking-tighter mb-4 drop-shadow-[0_0_20px_rgba(0,82,255,0.4)]">LEVER</div>
+                <div id="title-line1" class="text-offwhite font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-2">Ingegnerizza</div>
+                <div id="title-line2" class="text-offwhite text-opacity-40 font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-8">I Risultati.</div>
+                
+                <!-- Descrizione che svanirà -->
+                <p id="hero-desc" class="text-lg md:text-xl font-normal text-offwhite/70 max-w-2xl mx-auto drop-shadow-md">
+                    Sblocca il tuo potenziale con un approccio basato sulla biomeccanica. Rimuoviamo il caso dalla programmazione per massimizzare la resa sotto carico.
+                </p>
+                
             </div>
+
+            <!-- Contenitore 3D (Z-20: Sta in mezzo, sopra i testi, non interferisce) -->
+            <div id="canvas-container" class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                <!-- ThreeJS canvas injected here -->
+            </div>
+
         </section>
 
-        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente nascosto e sbloccato dopo lo scroll -->
-        <div id="rest-of-page">
+        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente invisibile, appare dopo lo scroll -->
+        <div id="rest-of-page" class="opacity-0">
             
             <!-- FEATURE BANNER: BARBELL -->
             <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
@@ -473,7 +459,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt">
+    <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3 group cursor-default">
                 <span class="text-xl font-black tracking-widest uppercase text-offwhite/50 group-hover:text-cobalt transition-colors duration-500">
@@ -537,7 +523,7 @@
         const scene = new THREE.Scene();
         
         const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.z = 12;
+        camera.position.z = 14; // Leggermente allontanato per bilanciare i testi enormi
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
@@ -555,7 +541,7 @@
         accentLight.position.set(-5, -5, -2);
         scene.add(accentLight);
 
-        // IL TRUCCO PER GSAP: Un "outerGroup" che GSAP può manipolare senza interrompere il loop di base.
+        // OUTER GROUP per la rotazione guidata da GSAP (Senza rompere il loop base)
         const outerGroup = new THREE.Group();
         scene.add(outerGroup);
 
@@ -596,7 +582,7 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
 
-            // Animazione idle continua interna
+            // Animazione continua di base
             group.rotation.y += 0.005;
             group.rotation.x += 0.002;
             icosahedron.rotation.y -= 0.008;
@@ -618,8 +604,13 @@
         // --- 3. GSAP & SCROLLTRIGGER ANIMATION ---
         gsap.registerPlugin(ScrollTrigger);
 
-        // A. Scompone il titolo in singoli "span" per l'animazione di esplosione
-        const lines = [document.getElementById('title-line1'), document.getElementById('title-line2')];
+        // A. Scompone le righe del titolo in singoli "span" per esplosione
+        const lines = [
+            document.getElementById('title-lever'),
+            document.getElementById('title-line1'), 
+            document.getElementById('title-line2')
+        ];
+        
         lines.forEach(line => {
             if (!line) return;
             const text = line.innerText;
@@ -632,45 +623,49 @@
             });
         });
 
-        // B. Nascondi la seconda scena all'avvio
-        gsap.set("#rest-of-page", { opacity: 0 });
-
-        // C. Creazione della Timeline vincolata allo Scroll (Pinning)
+        // B. Timeline vincolata allo Scroll (Pinning)
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#hero-section",
                 start: "top top",
-                end: "+=1500", // Distanza in pixel da scrollare per completare l'animazione
-                pin: true,     // Blocca la sezione a schermo
-                scrub: 1,      // Rende l'animazione fluida agganciandola allo scroll
+                end: "+=1500", // Forza uno scroll di 1500px prima di sbloccare
+                pin: true,     
+                scrub: 1,      // Animazione fluida legata alla rotella
             }
         });
 
-        // Step 1: Esplosione delle lettere del titolo verso l'alto
+        // Step 1: Esplosione delle singole lettere
         tl.to(".letter", {
-            y: () => -100 - Math.random() * 200, // Volano in alto a distanze random
-            x: () => 100 - Math.random() * 200,  // Si allargano orizzontalmente
-            rotationZ: () => 90 - Math.random() * 180, // Ruotano casualmente
+            y: () => -100 - Math.random() * 400, // Volano in alto
+            x: () => (Math.random() - 0.5) * 600, // Si disperdono a destra/sinistra
+            rotationZ: () => (Math.random() - 0.5) * 360, 
             opacity: 0,
-            stagger: 0.015,
-            ease: "power2.out",
+            stagger: 0.005, // Effetto a catena fluido
             duration: 1
         }, 0);
 
-        // Step 2: Sfuma via la descrizione e i bottoni
+        // Step 2: Sfuma via la descrizione base
         tl.to("#hero-desc", { opacity: 0, y: -50, duration: 0.5 }, 0);
 
-        // Step 3: Modello 3D ruota di 360 gradi (in aggiunta alla sua rotazione base)
+        // Step 3: Modello 3D ruota di 360 gradi aggiuntivi per effetto "spinta"
         tl.to(outerGroup.rotation, {
-            y: Math.PI * 2, // 360 gradi
-            ease: "none",
+            y: Math.PI * 2,
+            x: Math.PI * 0.5, // Leggera inclinazione drammatica
+            ease: "power1.inOut",
             duration: 1.5
         }, 0);
 
-        // Step 4: Finita la rotazione, appare in dissolvenza il resto del sito prima di sbloccare
-        tl.to("#rest-of-page", {
-            opacity: 1,
-            duration: 0.5
+        // Step 4: Appare la Navigazione in alto
+        tl.to("#main-nav", { 
+            y: 0, 
+            opacity: 1, 
+            duration: 0.3 
+        }, 1.2);
+
+        // Step 5: Appare il resto del sito per farti scendere
+        tl.to("#rest-of-page", { 
+            opacity: 1, 
+            duration: 0.5 
         }, 1.2); 
 
     </script>
