@@ -193,16 +193,23 @@
             </div>
             <div class="glass-overlay pointer-events-none"></div>
 
-            <!-- TESTO BACKGROUND SCENA 2 (Z-5: Dietro l'atomo, separato ai lati) -->
-            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none w-full px-6 md:px-12 overflow-hidden">
-                <div class="w-full max-w-[1400px] flex justify-between items-center">
-                    <h2 class="text-[9vw] md:text-[7vw] lg:text-[5.5vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)]">
+            <!-- TESTO BACKGROUND SCENA 2 (Z-5: Diviso a metà, perfettamente simmetrico) -->
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none w-full overflow-hidden">
+                
+                <!-- Metà Sinistra per LEVER -->
+                <div class="w-1/2 h-full flex items-center justify-end pr-[12vw] md:pr-[15vw]">
+                    <h2 class="text-[6vw] md:text-[5vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
                         LEVER
                     </h2>
-                    <h2 class="text-[9vw] md:text-[7vw] lg:text-[5.5vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)]">
+                </div>
+                
+                <!-- Metà Destra per COACHING -->
+                <div class="w-1/2 h-full flex items-center justify-start pl-[12vw] md:pl-[15vw]">
+                    <h2 class="text-[6vw] md:text-[5vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
                         COACHING
                     </h2>
                 </div>
+                
             </div>
 
             <!-- CONTENITORE 3D (Z-10: In mezzo) -->
