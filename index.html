@@ -13,6 +13,10 @@
     <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -105,11 +109,17 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        /* Gestione lettere animate */
+        .letter {
+            display: inline-block;
+            will-change: transform, opacity;
+        }
     </style>
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
-    <!-- NAV -->
+    <!-- NAV (Fixed) -->
     <nav class="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-4 rounded-2xl pointer-events-auto">
             
@@ -137,343 +147,348 @@
     </nav>
 
     <main class="flex-grow">
-        <!-- HERO SECTION -->
-        <section class="relative w-full min-h-screen flex items-center pt-24 overflow-hidden">
+        
+        <!-- HERO SECTION (SCENA 1) - Diventerà Pinned -->
+        <section id="hero-section" class="relative w-full h-screen flex items-center overflow-hidden">
             <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
                 
-                <div class="flex flex-col justify-center max-w-2xl mt-12 lg:mt-0">
+                <div class="flex flex-col justify-center max-w-2xl mt-12 lg:mt-0 relative">
+                    <!-- Titolo Diviso per l'animazione -->
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-                        Ingegnerizza<br>
-                        <span class="text-offwhite/40">I Risultati.</span>
+                        <div id="title-line1">Ingegnerizza</div>
+                        <div id="title-line2" class="text-offwhite/40">I Risultati.</div>
                     </h1>
                     
-                    <p class="text-lg md:text-xl font-normal text-offwhite/70 leading-relaxed mb-12 max-w-md">
-                        Sblocca il tuo potenziale con un approccio basato sulla biomeccanica. Rimuoviamo il caso dalla programmazione per massimizzare la resa sotto carico.
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#assessment" class="btn-primary inline-flex items-center justify-center bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest px-10 py-5 rounded-none shadow-[0_0_20px_rgba(0,82,255,0.3)]">
-                            Inizia il Percorso
-                        </a>
-                        <a href="#calculator" class="group inline-flex items-center justify-center border border-offwhite/20 hover:border-cobalt text-offwhite hover:text-cobalt font-bold text-sm uppercase tracking-widest px-8 py-5 rounded-none transition-colors">
-                            Calcola 1RM <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div id="canvas-container" class="h-[40vh] lg:h-auto min-h-[400px] flex items-center justify-center relative">
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURE BANNER: BARBELL -->
-        <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
-            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-6">
-                    <svg viewBox="0 0 100 40" class="w-20 h-auto text-cobalt group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_#0052FF] transition-all duration-500" fill="currentColor">
-                        <path d="M10,15 L15,15 L15,10 L25,10 L25,30 L15,30 L15,25 L10,25 Z"/>
-                        <path d="M75,10 L85,10 L85,15 L90,15 L90,25 L85,25 L85,30 L75,30 Z"/>
-                        <path d="M25,18 L75,18 L75,22 L25,22 Z"/>
-                    </svg>
-                    <div class="flex flex-col">
-                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest">Tool Integrato</span>
-                        <span class="text-offwhite font-semibold tracking-tight text-lg group-hover:text-cobalt transition-colors">Calcolatore Massimale (1RM)</span>
-                    </div>
-                </div>
-                <span class="text-offwhite/50 text-sm font-medium tracking-widest uppercase flex items-center gap-2 group-hover:text-offwhite transition-colors">
-                    Provalo ora <span class="text-cobalt font-black transform group-hover:translate-x-2 transition-transform">→</span>
-                </span>
-            </div>
-        </a>
-
-        <!-- SYSTEM SECTION -->
-        <section id="system" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-20 md:w-2/3">
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">
-                        La Meccanica dell'Ipertrofia.
-                    </h2>
-                    <p class="text-offwhite/60 font-normal leading-relaxed text-lg max-w-2xl">
-                        Il nostro sistema tratta il corpo umano come un problema ingegneristico. Analizziamo i vettori di forza e strutturiamo sistemi scalabili per la tua performance.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
-                        <div>
-                            <div class="text-cobalt font-black text-6xl mb-6">01</div>
-                            <h3 class="text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
-                            <p class="text-offwhite/60 text-sm leading-loose">
-                                Decostruzione del tuo schema motorio. Identifichiamo le dispersioni di forza e le criticità articolari per ottimizzare ogni singola alzata.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
-                        <div>
-                            <div class="text-cobalt font-black text-6xl mb-6">02</div>
-                            <h3 class="text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
-                            <p class="text-offwhite/60 text-sm leading-loose">
-                                Strutturazione basata su periodizzazione a blocchi e autoregolazione. Eliminiamo il volume spazzatura concentrando lo stress meccanico dove serve.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
-                        <div>
-                            <div class="text-cobalt font-black text-6xl mb-6">03</div>
-                            <h3 class="text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
-                            <p class="text-offwhite/60 text-sm leading-loose">
-                                Monitoraggio rigoroso dei parametri. Aggiornamento continuo della programmazione in base alla reale risposta del tuo sistema nervoso centrale.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CALCULATOR SECTION -->
-        <section id="calculator" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
-            <div class="max-w-5xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
-                
-                <div class="lg:w-1/2">
-                    <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">TOOL DATA-DRIVEN</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">Proietta il tuo Massimale.</h2>
-                    <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-6">
-                        Conoscere il proprio 1RM (One-Rep Max) è fondamentale per calibrare correttamente le percentuali di carico e l'intensità (RPE/RIR) all'interno del mesociclo.
-                    </p>
-                    <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-8">
-                        Il tool sfrutta la <strong class="text-offwhite">Formula di Brzycki</strong>, considerata il gold standard scientifico per la stima della forza massima su un numero di ripetizioni medio-basso.
-                    </p>
-                    <div class="p-4 border-l-2 border-cobalt bg-cobalt/5">
-                        <code class="text-cobalt font-bold text-sm">1RM = Peso × [ 36 / ( 37 - Ripetizioni ) ]</code>
-                    </div>
-                </div>
-
-                <div class="lg:w-1/2 w-full glass p-8 md:p-12 rounded-xl relative shadow-[0_0_30px_rgba(0,82,255,0.05)]">
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Esercizio (Opzionale)</label>
-                        <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 rounded-none text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Peso (kg)</label>
-                            <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30">
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Ripetizioni</label>
-                            <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
-                        </div>
-                    </div>
-                    
-                    <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mb-8">
-                        Elabora Proiezione
-                    </button>
-                    
-                    <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
-                        <div id="calc-title" class="text-xs uppercase tracking-widest font-bold text-offwhite/50 mb-2">1RM Stimato</div>
-                        <div id="calc-result" class="text-6xl font-black tracking-tighter text-offwhite">
-                            -- <span class="text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
-                        </div>
-                        <div id="calc-warning" class="text-xs text-[#ff4d4d] mt-3 hidden">
-                            Inserisci valori validi.
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- TEAM SECTION -->
-        <section id="team" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-16 text-center">
-                    <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">IL TEAM</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tighter">Dietro la Metodologia</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- Leonardo -->
-                    <div class="glass p-8 rounded-xl flex flex-col">
-                        <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
-                        
-                        <h3 class="text-3xl font-bold mb-1 tracking-tight">Leonardo</h3>
-                        <p class="text-cobalt font-medium text-sm mb-6">Biomechanical Analysis & Strategy</p>
-                        
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Ingegneria Biomedica (2° Anno)</span>
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding</span>
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Calcio)</span>
-                        </div>
-                        
-                        <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
-                            Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Il suo focus è decostruire ogni alzata e traiettoria attraverso i principi dell'ingegneria e della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico riducendo lo stress articolare inutile.
+                    <!-- Elementi che sfumeranno via -->
+                    <div id="hero-desc">
+                        <p class="text-lg md:text-xl font-normal text-offwhite/70 leading-relaxed mb-12 max-w-md">
+                            Sblocca il tuo potenziale con un approccio basato sulla biomeccanica. Rimuoviamo il caso dalla programmazione per massimizzare la resa sotto carico.
                         </p>
                         
-                        <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
-                            "La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."
-                        </blockquote>
-                    </div>
-
-                    <!-- Elia -->
-                    <div class="glass p-8 rounded-xl flex flex-col">
-                        <img src="ELIA.jpg" alt="Elia" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
-                        
-                        <h3 class="text-3xl font-bold mb-1 tracking-tight">Elia</h3>
-                        <p class="text-cobalt font-medium text-sm mb-6">Kinesiology & Performance Coach</p>
-                        
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Scienze Motorie (2° Anno)</span>
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Istruttore PT 1° Livello</span>
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding & Powerbuilding</span>
-                            <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Basket)</span>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#assessment" class="btn-primary inline-flex items-center justify-center bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest px-10 py-5 rounded-none shadow-[0_0_20px_rgba(0,82,255,0.3)]">
+                                Inizia il Percorso
+                            </a>
+                            <a href="#calculator" class="group inline-flex items-center justify-center border border-offwhite/20 hover:border-cobalt text-offwhite hover:text-cobalt font-bold text-sm uppercase tracking-widest px-8 py-5 rounded-none transition-colors">
+                                Calcola 1RM <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                            </a>
                         </div>
-                        
-                        <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
-                            Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico pratico maturato tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia, strutturando percorsi sostenibili e orientati alla performance nel lungo periodo.
-                        </p>
-                        
-                        <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
-                            "La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."
-                        </blockquote>
                     </div>
+                </div>
+
+                <div id="canvas-container" class="h-[40vh] lg:h-[70vh] min-h-[400px] flex items-center justify-center relative">
+                    <!-- ThreeJS canvas injected here -->
                 </div>
             </div>
         </section>
 
-        <!-- PRICING & FORM SECTION -->
-        <section id="pricing" class="w-full py-24 px-6 relative z-10 bg-[#0a0a0a]">
-            <div class="max-w-4xl mx-auto">
-                
-                <div class="glass p-10 md:p-14 text-center mb-16 rounded-xl border-cobalt/30 border shadow-[0_0_30px_rgba(0,82,255,0.05)]">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight">Fase Beta (8 Settimane)</h3>
-                    <div class="text-5xl md:text-7xl font-black text-cobalt tracking-tighter mb-8">
-                        0€ <span class="text-lg font-normal text-offwhite/50 tracking-normal uppercase">/ Primi iscritti</span>
+        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente nascosto e sbloccato dopo lo scroll -->
+        <div id="rest-of-page">
+            
+            <!-- FEATURE BANNER: BARBELL -->
+            <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
+                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-6">
+                        <svg viewBox="0 0 100 40" class="w-20 h-auto text-cobalt group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_#0052FF] transition-all duration-500" fill="currentColor">
+                            <path d="M10,15 L15,15 L15,10 L25,10 L25,30 L15,30 L15,25 L10,25 Z"/>
+                            <path d="M75,10 L85,10 L85,15 L90,15 L90,25 L85,25 L85,30 L75,30 Z"/>
+                            <path d="M25,18 L75,18 L75,22 L25,22 Z"/>
+                        </svg>
+                        <div class="flex flex-col">
+                            <span class="text-cobalt font-bold text-xs uppercase tracking-widest">Tool Integrato</span>
+                            <span class="text-offwhite font-semibold tracking-tight text-lg group-hover:text-cobalt transition-colors">Calcolatore Massimale (1RM)</span>
+                        </div>
                     </div>
-                    <ul class="text-offwhite/80 space-y-4 max-w-md mx-auto mb-10 text-left">
-                        <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione 1:1 science-based su misura</li>
-                        <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Dashboard automatizzata (Volume, Carichi, PR)</li>
-                        <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Assistenza garantita entro 24/48h</li>
-                    </ul>
+                    <span class="text-offwhite/50 text-sm font-medium tracking-widest uppercase flex items-center gap-2 group-hover:text-offwhite transition-colors">
+                        Provalo ora <span class="text-cobalt font-black transform group-hover:translate-x-2 transition-transform">→</span>
+                    </span>
                 </div>
+            </a>
 
-                <div id="assessment" class="glass p-8 md:p-12 rounded-xl relative overflow-hidden">
-                    <div class="mb-10 text-center relative z-10">
-                        <h2 class="text-3xl font-bold tracking-tighter mb-4">Candidati Ora</h2>
-                        <p class="text-offwhite/60 text-sm">Compila il form per permetterci di valutare il tuo punto di partenza strutturale.</p>
+            <!-- SYSTEM SECTION -->
+            <section id="system" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-20 md:w-2/3">
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">
+                            La Meccanica dell'Ipertrofia.
+                        </h2>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-lg max-w-2xl">
+                            Il nostro sistema tratta il corpo umano come un problema ingegneristico. Analizziamo i vettori di forza e strutturiamo sistemi scalabili per la tua performance.
+                        </p>
                     </div>
 
-                    <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-6 relative z-10">
-                        <input type="hidden" name="_next" value="grazie.html">
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Nome e Cognome</label>
-                                <input type="text" name="name" required class="form-input w-full p-4 rounded-none text-sm">
+                                <div class="text-cobalt font-black text-6xl mb-6">01</div>
+                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
+                                <p class="text-offwhite/60 text-sm leading-loose">
+                                    Decostruzione del tuo schema motorio. Identifichiamo le dispersioni di forza e le criticità articolari per ottimizzare ogni singola alzata.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
+                            <div>
+                                <div class="text-cobalt font-black text-6xl mb-6">02</div>
+                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
+                                <p class="text-offwhite/60 text-sm leading-loose">
+                                    Strutturazione basata su periodizzazione a blocchi e autoregolazione. Eliminiamo il volume spazzatura concentrando lo stress meccanico dove serve.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
+                            <div>
+                                <div class="text-cobalt font-black text-6xl mb-6">03</div>
+                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
+                                <p class="text-offwhite/60 text-sm leading-loose">
+                                    Monitoraggio rigoroso dei parametri. Aggiornamento continuo della programmazione in base alla reale risposta del tuo sistema nervoso centrale.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CALCULATOR SECTION -->
+            <section id="calculator" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
+                <div class="max-w-5xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+                    
+                    <div class="lg:w-1/2">
+                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">TOOL DATA-DRIVEN</span>
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">Proietta il tuo Massimale.</h2>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-6">
+                            Conoscere il proprio 1RM (One-Rep Max) è fondamentale per calibrare correttamente le percentuali di carico e l'intensità (RPE/RIR) all'interno del mesociclo.
+                        </p>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-8">
+                            Il tool sfrutta la <strong class="text-offwhite">Formula di Brzycki</strong>, considerata il gold standard scientifico per la stima della forza massima su un numero di ripetizioni medio-basso.
+                        </p>
+                        <div class="p-4 border-l-2 border-cobalt bg-cobalt/5">
+                            <code class="text-cobalt font-bold text-sm">1RM = Peso × [ 36 / ( 37 - Ripetizioni ) ]</code>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 w-full glass p-8 md:p-12 rounded-xl relative shadow-[0_0_30px_rgba(0,82,255,0.05)]">
+                        
+                        <div class="mb-6">
+                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Esercizio (Opzionale)</label>
+                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 rounded-none text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Peso (kg)</label>
+                                <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30">
                             </div>
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Email</label>
-                                <input type="email" name="email" required class="form-input w-full p-4 rounded-none text-sm">
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Ripetizioni</label>
+                                <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
                             </div>
                         </div>
-
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Numero di Telefono</label>
-                            <input type="tel" name="phone" required class="form-input w-full p-4 rounded-none text-sm">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Background e Infortuni</label>
-                            <textarea name="history" rows="3" required placeholder="Anni di allenamento, problematiche articolari passate..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Stile di Vita</label>
-                            <textarea name="lifestyle" rows="2" required placeholder="Ritmi di lavoro, sonno, stress..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">Consigli Alimentari?</label>
-                            <div class="flex gap-8">
-                                <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                    <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-4 h-4"> Sì
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                    <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-4 h-4"> No
-                                </label>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Criticità Attuale</label>
-                            <textarea name="struggle" rows="3" required placeholder="Qual è lo stallo che stai riscontrando oggi?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mt-4">
-                            Invia Candidatura
+                        
+                        <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mb-8">
+                            Elabora Proiezione
                         </button>
-                    </form>
-                </div>
-            </div>
-        </section>
+                        
+                        <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
+                            <div id="calc-title" class="text-xs uppercase tracking-widest font-bold text-offwhite/50 mb-2">1RM Stimato</div>
+                            <div id="calc-result" class="text-6xl font-black tracking-tighter text-offwhite">
+                                -- <span class="text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
+                            </div>
+                            <div id="calc-warning" class="text-xs text-[#ff4d4d] mt-3 hidden">
+                                Inserisci valori validi.
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- CONTACTS SECTION -->
-        <section id="contacts" class="w-full py-24 px-6 border-t border-offwhite/5 relative z-10">
-            <div class="max-w-7xl mx-auto text-center">
-                <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">NETWORK</span>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-16">Entra in Contatto</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                    <!-- Email -->
-                    <a href="mailto:lever.coaching.lab@gmail.com" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                        <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-6 h-6 text-cobalt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <h3 class="font-bold mb-2 text-lg">Email Ufficiale</h3>
-                        <p class="text-offwhite/70 text-sm">lever.coaching.lab@gmail.com</p>
-                    </a>
-                    
-                    <!-- IG Leo -->
-                    <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                        <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        </div>
-                        <h3 class="font-bold mb-2 text-lg">Leonardo Cucchi</h3>
-                        <p class="text-offwhite/70 text-sm">@leo.cucchi</p>
-                    </a>
-                    
-                    <!-- IG Elia -->
-                    <a href="https://instagram.com/elia_berga_" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                        <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        </div>
-                        <h3 class="font-bold mb-2 text-lg">Elia</h3>
-                        <p class="text-offwhite/70 text-sm">@elia_berga_</p>
-                    </a>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- TEAM SECTION -->
+            <section id="team" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-16 text-center">
+                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">IL TEAM</span>
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter">Dietro la Metodologia</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <!-- Leonardo -->
+                        <div class="glass p-8 rounded-xl flex flex-col">
+                            <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                            
+                            <h3 class="text-3xl font-bold mb-1 tracking-tight">Leonardo</h3>
+                            <p class="text-cobalt font-medium text-sm mb-6">Biomechanical Analysis & Strategy</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Ingegneria Biomedica (2° Anno)</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Calcio)</span>
+                            </div>
+                            
+                            <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
+                                Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Il suo focus è decostruire ogni alzata e traiettoria attraverso i principi dell'ingegneria e della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico riducendo lo stress articolare inutile.
+                            </p>
+                            
+                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
+                                "La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."
+                            </blockquote>
+                        </div>
+
+                        <!-- Elia -->
+                        <div class="glass p-8 rounded-xl flex flex-col">
+                            <img src="ELIA.jpg" alt="Elia" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                            
+                            <h3 class="text-3xl font-bold mb-1 tracking-tight">Elia</h3>
+                            <p class="text-cobalt font-medium text-sm mb-6">Kinesiology & Performance Coach</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Scienze Motorie (2° Anno)</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Istruttore PT 1° Livello</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding & Powerbuilding</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Basket)</span>
+                            </div>
+                            
+                            <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
+                                Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico pratico maturato tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia, strutturando percorsi sostenibili e orientati alla performance nel lungo periodo.
+                            </p>
+                            
+                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
+                                "La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRICING & FORM SECTION -->
+            <section id="pricing" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <div class="glass p-10 md:p-14 text-center mb-16 rounded-xl border-cobalt/30 border shadow-[0_0_30px_rgba(0,82,255,0.05)]">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight">Fase Beta (8 Settimane)</h3>
+                        <div class="text-5xl md:text-7xl font-black text-cobalt tracking-tighter mb-8">
+                            0€ <span class="text-lg font-normal text-offwhite/50 tracking-normal uppercase">/ Primi iscritti</span>
+                        </div>
+                        <ul class="text-offwhite/80 space-y-4 max-w-md mx-auto mb-10 text-left">
+                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione 1:1 science-based su misura</li>
+                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Dashboard automatizzata (Volume, Carichi, PR)</li>
+                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Assistenza garantita entro 24/48h</li>
+                        </ul>
+                    </div>
+
+                    <div id="assessment" class="glass p-8 md:p-12 rounded-xl relative overflow-hidden">
+                        <div class="mb-10 text-center relative z-10">
+                            <h2 class="text-3xl font-bold tracking-tighter mb-4">Candidati Ora</h2>
+                            <p class="text-offwhite/60 text-sm">Compila il form per permetterci di valutare il tuo punto di partenza strutturale.</p>
+                        </div>
+
+                        <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-6 relative z-10">
+                            <input type="hidden" name="_next" value="grazie.html">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Nome e Cognome</label>
+                                    <input type="text" name="name" required class="form-input w-full p-4 rounded-none text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Email</label>
+                                    <input type="email" name="email" required class="form-input w-full p-4 rounded-none text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Numero di Telefono</label>
+                                <input type="tel" name="phone" required class="form-input w-full p-4 rounded-none text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Background e Infortuni</label>
+                                <textarea name="history" rows="3" required placeholder="Anni di allenamento, problematiche articolari passate..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Stile di Vita</label>
+                                <textarea name="lifestyle" rows="2" required placeholder="Ritmi di lavoro, sonno, stress..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">Consigli Alimentari?</label>
+                                <div class="flex gap-8">
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-4 h-4"> Sì
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-4 h-4"> No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Criticità Attuale</label>
+                                <textarea name="struggle" rows="3" required placeholder="Qual è lo stallo che stai riscontrando oggi?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mt-4">
+                                Invia Candidatura
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACTS SECTION -->
+            <section id="contacts" class="w-full py-24 px-6 relative z-10">
+                <div class="max-w-7xl mx-auto text-center">
+                    <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">NETWORK</span>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-16">Entra in Contatto</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                        <a href="mailto:lever.coaching.lab@gmail.com" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
+                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-6 h-6 text-cobalt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg">Email Ufficiale</h3>
+                            <p class="text-offwhite/70 text-sm">lever.coaching.lab@gmail.com</p>
+                        </a>
+                        
+                        <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
+                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg">Leonardo Cucchi</h3>
+                            <p class="text-offwhite/70 text-sm">@leo.cucchi</p>
+                        </a>
+                        
+                        <a href="https://instagram.com/elia_berga_" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
+                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg">Elia</h3>
+                            <p class="text-offwhite/70 text-sm">@elia_berga_</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- FOOTER -->
     <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            
             <div class="flex items-center gap-3 group cursor-default">
                 <span class="text-xl font-black tracking-widest uppercase text-offwhite/50 group-hover:text-cobalt transition-colors duration-500">
                     LEVER
                 </span>
             </div>
-            
             <div class="text-xs font-medium uppercase tracking-widest text-offwhite/40">
                 &copy; 2026 Lever Coaching System.
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPTS (Three.js & 1RM Calculator) -->
+    <!-- SCRIPTS CORE -->
     <script>
-        // --- 1RM CALCULATOR LOGIC ---
+        // --- 1. 1RM CALCULATOR LOGIC ---
         document.getElementById('calc-btn').addEventListener('click', function() {
             const exerciseInput = document.getElementById('calc-exercise').value.trim();
             const weightInput = document.getElementById('calc-weight').value;
@@ -517,7 +532,7 @@
             }, 150);
         });
 
-        // --- THREE.JS IMPLEMENTATION ---
+        // --- 2. THREE.JS IMPLEMENTATION ---
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         
@@ -540,20 +555,19 @@
         accentLight.position.set(-5, -5, -2);
         scene.add(accentLight);
 
+        // IL TRUCCO PER GSAP: Un "outerGroup" che GSAP può manipolare senza interrompere il loop di base.
+        const outerGroup = new THREE.Group();
+        scene.add(outerGroup);
+
         const group = new THREE.Group();
+        outerGroup.add(group);
 
         const coreMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xEDEDED, 
-            roughness: 0.2, 
-            metalness: 0.8,
-            flatShading: true
+            color: 0xEDEDED, roughness: 0.2, metalness: 0.8, flatShading: true
         });
 
         const ringMaterial = new THREE.MeshStandardMaterial({
-            color: 0x222222,
-            roughness: 0.5,
-            metalness: 0.9,
-            wireframe: false
+            color: 0x222222, roughness: 0.5, metalness: 0.9, wireframe: false
         });
 
         const icosahedronGeo = new THREE.IcosahedronGeometry(2, 0);
@@ -576,15 +590,13 @@
         ring3.rotation.y = -Math.PI / 4;
         group.add(ring3);
 
-        scene.add(group);
-
         const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-            const delta = clock.getDelta();
             const time = clock.getElapsedTime();
 
+            // Animazione idle continua interna
             group.rotation.y += 0.005;
             group.rotation.x += 0.002;
             icosahedron.rotation.y -= 0.008;
@@ -593,7 +605,6 @@
 
             renderer.render(scene, camera);
         }
-
         animate();
 
         window.addEventListener('resize', () => {
@@ -603,6 +614,65 @@
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
         });
+
+        // --- 3. GSAP & SCROLLTRIGGER ANIMATION ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // A. Scompone il titolo in singoli "span" per l'animazione di esplosione
+        const lines = [document.getElementById('title-line1'), document.getElementById('title-line2')];
+        lines.forEach(line => {
+            if (!line) return;
+            const text = line.innerText;
+            line.innerHTML = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.innerHTML = char === ' ' ? '&nbsp;' : char;
+                line.appendChild(span);
+            });
+        });
+
+        // B. Nascondi la seconda scena all'avvio
+        gsap.set("#rest-of-page", { opacity: 0 });
+
+        // C. Creazione della Timeline vincolata allo Scroll (Pinning)
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-section",
+                start: "top top",
+                end: "+=1500", // Distanza in pixel da scrollare per completare l'animazione
+                pin: true,     // Blocca la sezione a schermo
+                scrub: 1,      // Rende l'animazione fluida agganciandola allo scroll
+            }
+        });
+
+        // Step 1: Esplosione delle lettere del titolo verso l'alto
+        tl.to(".letter", {
+            y: () => -100 - Math.random() * 200, // Volano in alto a distanze random
+            x: () => 100 - Math.random() * 200,  // Si allargano orizzontalmente
+            rotationZ: () => 90 - Math.random() * 180, // Ruotano casualmente
+            opacity: 0,
+            stagger: 0.015,
+            ease: "power2.out",
+            duration: 1
+        }, 0);
+
+        // Step 2: Sfuma via la descrizione e i bottoni
+        tl.to("#hero-desc", { opacity: 0, y: -50, duration: 0.5 }, 0);
+
+        // Step 3: Modello 3D ruota di 360 gradi (in aggiunta alla sua rotazione base)
+        tl.to(outerGroup.rotation, {
+            y: Math.PI * 2, // 360 gradi
+            ease: "none",
+            duration: 1.5
+        }, 0);
+
+        // Step 4: Finita la rotazione, appare in dissolvenza il resto del sito prima di sbloccare
+        tl.to("#rest-of-page", {
+            opacity: 1,
+            duration: 0.5
+        }, 1.2); 
+
     </script>
 </body>
 </html>
