@@ -59,14 +59,55 @@
             border: 1px solid rgba(237, 237, 237, 0.1);
         }
 
-        /* Sfondo radiale spostato sulla hero per non spegnere i testi */
-        #hero-section::after {
-            content: '';
+        /* --- EFFETTO APPLE LIQUID GLASS --- */
+        .liquid-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(0,82,255,0.08) 0%, transparent 60%);
-            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+            background: #0a0a0a;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: liquidFloat 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .blob-1 {
+            width: 50vw; height: 50vw;
+            background: rgba(0, 82, 255, 0.2); /* Cobalt */
+            top: -10%; left: -10%;
+        }
+        
+        .blob-2 {
+            width: 40vw; height: 40vw;
+            background: rgba(100, 0, 255, 0.15); /* Viola/Blu scuro per profondità */
+            bottom: -10%; right: -10%;
+            animation-delay: -7s;
+        }
+
+        .glass-overlay {
+            position: absolute;
+            inset: 0;
             z-index: 1;
+            background: rgba(17, 17, 17, 0.2);
+            backdrop-filter: blur(50px); /* Diffonde la luce dei blob */
+            -webkit-backdrop-filter: blur(50px);
+        }
+
+        @keyframes liquidFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.2); }
+            100% { transform: translate(-5%, 5%) scale(0.9); }
+        }
+
+        /* --- TESTO WATERMARK SCENA 2 --- */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(237, 237, 237, 0.1);
         }
 
         canvas {
@@ -105,7 +146,6 @@
             -moz-appearance: textfield;
         }
 
-        /* Gestione lettere animate per GSAP */
         .letter {
             display: inline-block;
             will-change: transform, opacity;
@@ -114,8 +154,8 @@
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
-    <!-- NAV (Inizialmente nascosta da GSAP) -->
-    <nav id="main-nav" class="fixed top-6 left-0 right-0 z-50 px-6 pointer-events-none opacity-0 translate-y-[-100px]">
+    <!-- NAV (Inizialmente invisibile e spostata in alto) -->
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-6 pt-6 pointer-events-none opacity-0 -translate-y-full">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-4 rounded-2xl pointer-events-auto shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
             
             <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
@@ -124,6 +164,7 @@
                 </span>
             </a>
             
+            <!-- Link di navigazione visibili allo scendere della barra -->
             <div class="hidden lg:flex gap-8 font-medium text-sm tracking-wide text-offwhite/80">
                 <a href="#system" class="hover:text-offwhite transition-colors duration-200">Metodologia</a>
                 <a href="#calculator" class="hover:text-cobalt transition-colors duration-200">Calcolatore 1RM</a>
@@ -143,35 +184,41 @@
 
     <main class="flex-grow">
         
-        <!-- HERO SECTION (SCENA 1) - Struttura Centrata -->
-        <section id="hero-section" class="relative w-full h-screen overflow-hidden flex items-center justify-center bg-asphalt">
+        <!-- HERO SECTION (SCENA 1 & 2) -->
+        <section id="hero-section" class="relative w-full h-screen overflow-hidden flex items-center justify-center">
             
-            <!-- Contenitore Testo (Sta dietro/attorno al 3D) -->
-            <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 w-full px-6 pointer-events-none">
-                
-                <!-- Titolo Gigante diviso per GSAP -->
-                <div id="title-lever" class="text-cobalt font-black text-7xl md:text-9xl uppercase tracking-tighter mb-4 drop-shadow-[0_0_20px_rgba(0,82,255,0.4)]">LEVER</div>
-                <div id="title-line1" class="text-offwhite font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-2">Ingegnerizza</div>
-                <div id="title-line2" class="text-offwhite text-opacity-40 font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-8">I Risultati.</div>
-                
-                <!-- Descrizione che svanirà -->
-                <p id="hero-desc" class="text-lg md:text-xl font-normal text-offwhite/70 max-w-2xl mx-auto drop-shadow-md">
-                    Sblocca il tuo potenziale con un approccio basato sulla biomeccanica. Rimuoviamo il caso dalla programmazione per massimizzare la resa sotto carico.
-                </p>
-                
+            <!-- LIQUID GLASS BACKGROUND (Z-0 & Z-1) -->
+            <div class="liquid-bg pointer-events-none">
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+            </div>
+            <div class="glass-overlay pointer-events-none"></div>
+
+            <!-- TESTO BACKGROUND SCENA 2 (Z-5: Dietro l'atomo) -->
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none">
+                <h2 class="text-[8vw] md:text-[6.5rem] lg:text-[9rem] font-black uppercase tracking-widest text-outline whitespace-nowrap select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)]">
+                    LEVER.COACHING
+                </h2>
             </div>
 
-            <!-- Contenitore 3D (Z-20: Sta in mezzo, sopra i testi, non interferisce) -->
-            <div id="canvas-container" class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                <!-- ThreeJS canvas injected here -->
+            <!-- CONTENITORE 3D (Z-10: In mezzo) -->
+            <div id="canvas-container" class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+                <!-- ThreeJS canvas iniettato qui -->
+            </div>
+
+            <!-- TESTO ESPLOSIVO SCENA 1 (Z-20: Davanti a tutto) -->
+            <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 w-full px-4 pointer-events-none">
+                <div id="title-lever" class="text-cobalt font-black text-[12vw] md:text-[10rem] uppercase tracking-tighter leading-none mb-4 drop-shadow-[0_0_20px_rgba(0,82,255,0.4)]">LEVER</div>
+                <div id="title-line1" class="text-offwhite font-black text-4xl md:text-7xl uppercase tracking-tighter leading-none mb-2 drop-shadow-lg">Ingegnerizza</div>
+                <div id="title-line2" class="text-offwhite/40 font-black text-4xl md:text-7xl uppercase tracking-tighter leading-none">I Risultati.</div>
             </div>
 
         </section>
 
-        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente invisibile, appare dopo lo scroll -->
-        <div id="rest-of-page" class="opacity-0">
+        <!-- RESTO DEL SITO (SCENA 2) - Inizialmente invisibile, appare dopo l'esplosione -->
+        <div id="rest-of-page" class="opacity-0 relative z-30 bg-asphalt">
             
-            <!-- FEATURE BANNER: BARBELL -->
+            <!-- FEATURE BANNER: BARBELL (Rimanda al calcolatore) -->
             <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
                 <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="flex items-center gap-6">
@@ -459,7 +506,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt mt-auto">
+    <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt mt-auto relative z-30">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3 group cursor-default">
                 <span class="text-xl font-black tracking-widest uppercase text-offwhite/50 group-hover:text-cobalt transition-colors duration-500">
@@ -523,7 +570,7 @@
         const scene = new THREE.Scene();
         
         const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.z = 14; // Leggermente allontanato per bilanciare i testi enormi
+        camera.position.z = 14; 
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
@@ -541,7 +588,7 @@
         accentLight.position.set(-5, -5, -2);
         scene.add(accentLight);
 
-        // OUTER GROUP per la rotazione guidata da GSAP (Senza rompere il loop base)
+        // OUTER GROUP per GSAP
         const outerGroup = new THREE.Group();
         scene.add(outerGroup);
 
@@ -582,7 +629,6 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
 
-            // Animazione continua di base
             group.rotation.y += 0.005;
             group.rotation.x += 0.002;
             icosahedron.rotation.y -= 0.008;
@@ -604,7 +650,6 @@
         // --- 3. GSAP & SCROLLTRIGGER ANIMATION ---
         gsap.registerPlugin(ScrollTrigger);
 
-        // A. Scompone le righe del titolo in singoli "span" per esplosione
         const lines = [
             document.getElementById('title-lever'),
             document.getElementById('title-line1'), 
@@ -623,46 +668,51 @@
             });
         });
 
-        // B. Timeline vincolata allo Scroll (Pinning)
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#hero-section",
                 start: "top top",
-                end: "+=1500", // Forza uno scroll di 1500px prima di sbloccare
+                end: "+=1500", 
                 pin: true,     
-                scrub: 1,      // Animazione fluida legata alla rotella
+                scrub: 1,      
             }
         });
 
-        // Step 1: Esplosione delle singole lettere
+        // 1. Esplosione Lettere Scena 1
         tl.to(".letter", {
-            y: () => -100 - Math.random() * 400, // Volano in alto
-            x: () => (Math.random() - 0.5) * 600, // Si disperdono a destra/sinistra
-            rotationZ: () => (Math.random() - 0.5) * 360, 
+            y: () => (Math.random() - 0.5) * 1000, 
+            x: () => (Math.random() - 0.5) * 1000, 
+            rotationZ: () => (Math.random() - 0.5) * 720, 
             opacity: 0,
-            stagger: 0.005, // Effetto a catena fluido
+            stagger: 0.005,
+            ease: "power2.out",
             duration: 1
         }, 0);
 
-        // Step 2: Sfuma via la descrizione base
-        tl.to("#hero-desc", { opacity: 0, y: -50, duration: 0.5 }, 0);
-
-        // Step 3: Modello 3D ruota di 360 gradi aggiuntivi per effetto "spinta"
+        // 2. Rotazione Atomo 3D
         tl.to(outerGroup.rotation, {
             y: Math.PI * 2,
-            x: Math.PI * 0.5, // Leggera inclinazione drammatica
+            x: Math.PI * 0.2, 
             ease: "power1.inOut",
             duration: 1.5
         }, 0);
 
-        // Step 4: Appare la Navigazione in alto
+        // 3. Dissolvenza Testo Background "LEVER.COACHING" (Dietro atomo)
+        tl.to("#scene2-text", {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out"
+        }, 1.0);
+
+        // 4. Discesa Barra Navigazione
         tl.to("#main-nav", { 
             y: 0, 
             opacity: 1, 
-            duration: 0.3 
+            duration: 0.3,
+            ease: "power2.out"
         }, 1.2);
 
-        // Step 5: Appare il resto del sito per farti scendere
+        // 5. Apparizione Resto del Sito (Bilanciere, Sezioni...)
         tl.to("#rest-of-page", { 
             opacity: 1, 
             duration: 0.5 
