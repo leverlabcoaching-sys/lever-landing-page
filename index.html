@@ -358,7 +358,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <!-- Leonardo -->
                         <div class="glass p-8 rounded-xl flex flex-col">
-                            <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                            <!-- FOTO QUADRATA (aspect-square) -->
+                            <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
                             
                             <h3 class="text-3xl font-bold mb-1 tracking-tight">Leonardo</h3>
                             <p class="text-cobalt font-medium text-sm mb-6">Biomechanical Analysis & Strategy</p>
@@ -380,7 +381,8 @@
 
                         <!-- Elia -->
                         <div class="glass p-8 rounded-xl flex flex-col">
-                            <img src="ELIA.jpg" alt="Elia" class="w-full aspect-[4/5] object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                            <!-- FOTO QUADRATA (aspect-square) -->
+                            <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
                             
                             <h3 class="text-3xl font-bold mb-1 tracking-tight">Elia</h3>
                             <p class="text-cobalt font-medium text-sm mb-6">Kinesiology & Performance Coach</p>
@@ -406,21 +408,57 @@
 
             <!-- PRICING & FORM SECTION -->
             <section id="pricing" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
-                <div class="max-w-4xl mx-auto">
+                <div class="max-w-7xl mx-auto">
                     
-                    <div class="glass p-10 md:p-14 text-center mb-16 rounded-xl border-cobalt/30 border shadow-[0_0_30px_rgba(0,82,255,0.05)]">
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight">Fase Beta (8 Settimane)</h3>
-                        <div class="text-5xl md:text-7xl font-black text-cobalt tracking-tighter mb-8">
-                            0€ <span class="text-lg font-normal text-offwhite/50 tracking-normal uppercase">/ Primi iscritti</span>
-                        </div>
-                        <ul class="text-offwhite/80 space-y-4 max-w-md mx-auto mb-10 text-left">
-                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione 1:1 science-based su misura</li>
-                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Dashboard automatizzata (Volume, Carichi, PR)</li>
-                            <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Assistenza garantita entro 24/48h</li>
-                        </ul>
+                    <div class="mb-16 text-center">
+                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">PACCHETTI</span>
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter">Scegli il tuo Percorso</h2>
                     </div>
 
-                    <div id="assessment" class="glass p-8 md:p-12 rounded-xl relative overflow-hidden">
+                    <!-- GRIGLIA PREZZI A DUE COLONNE -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+                        
+                        <!-- Programma Personalizzato (Nuovo) -->
+                        <div class="glass p-10 text-left rounded-xl border border-offwhite/10 hover:border-cobalt/30 transition-colors flex flex-col">
+                            <h3 class="text-2xl font-bold mb-2 tracking-tight">Programma Personalizzato</h3>
+                            <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
+                            <div class="text-4xl font-black text-offwhite tracking-tighter mb-8">
+                                --€
+                            </div>
+                            <ul class="text-offwhite/80 space-y-4 mb-10 flex-grow">
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione science-based su misura sulle proprie esigenze</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Check iniziale e alla fine delle 8 settimane</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Accesso alla nostra community Telegram</li>
+                            </ul>
+                            <a href="#assessment" class="btn-primary w-full bg-offwhite/10 text-offwhite hover:bg-offwhite hover:text-asphalt font-bold text-sm uppercase tracking-widest p-4 rounded-none text-center">
+                                Seleziona
+                            </a>
+                        </div>
+
+                        <!-- Coaching 1:1 (Esistente Aggiornato) -->
+                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-cobalt text-[10px] font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-widest">Premium</div>
+                            <h3 class="text-2xl font-bold mb-2 tracking-tight">Coaching 1:1 (Beta)</h3>
+                            <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
+                            <div class="text-4xl font-black text-cobalt tracking-tighter mb-8">
+                                0€ <span class="text-sm font-normal text-offwhite/50 tracking-normal uppercase">/ Primi iscritti</span>
+                            </div>
+                            <ul class="text-offwhite/80 space-y-4 mb-10 flex-grow">
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione 1:1 science-based su misura</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Dashboard automatizzata (Volume, Carichi, PR)</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Assistenza garantita entro 24/48h</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Check iniziale e alla fine delle 8 settimane</li>
+                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Accesso alla nostra community Telegram</li>
+                            </ul>
+                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-4 rounded-none text-center">
+                                Candidati Ora
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- FORM -->
+                    <div id="assessment" class="glass p-8 md:p-12 rounded-xl relative overflow-hidden max-w-4xl mx-auto">
                         <div class="mb-10 text-center relative z-10">
                             <h2 class="text-3xl font-bold tracking-tighter mb-4">Candidati Ora</h2>
                             <p class="text-offwhite/60 text-sm">Compila il form per permetterci di valutare il tuo punto di partenza strutturale.</p>
@@ -428,6 +466,19 @@
 
                         <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-6 relative z-10">
                             <input type="hidden" name="_next" value="grazie.html">
+
+                            <!-- NUOVO CAMPO: SELEZIONE PERCORSO -->
+                            <div class="mb-6 p-4 border border-cobalt/30 rounded bg-cobalt/5">
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">A quale percorso sei interessato?</label>
+                                <div class="flex flex-col md:flex-row gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="percorso" value="Programma Personalizzato" required class="accent-cobalt w-4 h-4"> Programma Personalizzato
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="percorso" value="Coaching 1:1" required class="accent-cobalt w-4 h-4"> Coaching 1:1
+                                    </label>
+                                </div>
+                            </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
