@@ -417,10 +417,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
                         
                         <!-- Programma Personalizzato -->
-                        <div class="glass p-10 text-left rounded-xl border border-offwhite/10 hover:border-cobalt/30 transition-colors flex flex-col">
+                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden transition-colors">
                             <h3 class="text-2xl font-bold mb-2 tracking-tight">Programma Personalizzato</h3>
                             <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
-                            <div class="text-4xl font-black text-offwhite tracking-tighter mb-8">
+                            <div class="text-4xl font-black text-cobalt tracking-tighter mb-8">
                                 0€
                             </div>
                             <ul class="text-offwhite/80 space-y-4 mb-10 flex-grow">
@@ -434,7 +434,7 @@
                         </div>
 
                         <!-- Coaching 1:1 -->
-                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden">
+                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden transition-colors">
                             <div class="absolute top-0 right-0 bg-cobalt text-[10px] font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-widest">Premium</div>
                             <h3 class="text-2xl font-bold mb-2 tracking-tight">Coaching 1:1 (Beta)</h3>
                             <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
@@ -465,7 +465,7 @@
                         <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-6 relative z-10">
                             <input type="hidden" name="_next" value="grazie.html">
 
-                            <!-- NUOVO CAMPO: SELEZIONE PERCORSO SENZA RIQUADRO BLU -->
+                            <!-- SCELTA PROGRAMMA -->
                             <div class="mb-6">
                                 <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">A quale percorso sei interessato?</label>
                                 <div class="flex gap-8">
@@ -474,6 +474,19 @@
                                     </label>
                                     <label class="flex items-center gap-2 cursor-pointer text-sm">
                                         <input type="radio" name="percorso" value="Coaching 1:1" required class="accent-cobalt w-4 h-4"> Coaching 1:1
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- CONSIGLI ALIMENTARI SPOSTATI IN ALTO -->
+                            <div class="mb-6">
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">Vuoi ricevere anche consigli alimentari?</label>
+                                <div class="flex gap-8">
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-4 h-4"> Sì
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-4 h-4"> No
                                     </label>
                                 </div>
                             </div>
@@ -494,26 +507,15 @@
                                 <input type="tel" name="phone" required class="form-input w-full p-4 rounded-none text-sm">
                             </div>
 
+                            <!-- NUOVE DOMANDE AL POSTO DEL VECCHIO BACKGROUND -->
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Background e Infortuni</label>
-                                <textarea name="history" rows="3" required placeholder="Anni di allenamento, problematiche articolari passate..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Obiettivo</label>
+                                <textarea name="obiettivo" rows="2" required placeholder="Qual è il tuo obiettivo principale?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
                             </div>
 
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Stile di Vita</label>
-                                <textarea name="lifestyle" rows="2" required placeholder="Ritmi di lavoro, sonno, stress..." class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">Consigli Alimentari?</label>
-                                <div class="flex gap-8">
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-4 h-4"> Sì
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-4 h-4"> No
-                                    </label>
-                                </div>
+                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Cosa ti aspetti da questo percorso</label>
+                                <textarea name="aspettative" rows="2" required placeholder="Cosa cerchi dal nostro coaching?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
                             </div>
 
                             <div>
