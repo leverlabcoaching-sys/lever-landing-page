@@ -193,8 +193,8 @@
             </div>
             <div class="glass-overlay pointer-events-none"></div>
 
-            <!-- TESTO BACKGROUND SCENA 2 (Z-5: Diviso a metà, perfettamente simmetrico) -->
-            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[5] opacity-0 pointer-events-none w-full overflow-hidden">
+            <!-- TESTO BACKGROUND SCENA 2 (Z-[15]: In primo piano rispetto all'atomo, simmetrico) -->
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[15] opacity-0 pointer-events-none w-full overflow-hidden">
                 
                 <!-- Metà Sinistra per LEVER -->
                 <div class="w-1/2 h-full flex items-center justify-end pr-[12vw] md:pr-[15vw]">
@@ -507,23 +507,19 @@
                                 <input type="tel" name="phone" required class="form-input w-full p-4 rounded-none text-sm">
                             </div>
 
-                            <!-- NUOVE DOMANDE AL POSTO DEL VECCHIO BACKGROUND -->
                             <div>
                                 <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Obiettivo</label>
                                 <textarea name="obiettivo" rows="2" required placeholder="Qual è il tuo obiettivo principale?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
                             </div>
-
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Cosa ti aspetti da questo percorso</label>
-                                <textarea name="aspettative" rows="2" required placeholder="Cosa cerchi dal nostro coaching?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
+                            
+                            <!-- CALL TO ACTION SCRITTA IN GRANDE -->
+                            <div class="pt-6 pb-2 text-center">
+                                <h3 class="text-2xl md:text-3xl font-black tracking-tighter text-offwhite">
+                                    Invia la candidatura e scopri i pacchetti
+                                </h3>
                             </div>
 
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Criticità Attuale</label>
-                                <textarea name="struggle" rows="3" required placeholder="Qual è lo stallo che stai riscontrando oggi?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                            </div>
-
-                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mt-4">
+                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mt-2">
                                 Invia Candidatura
                             </button>
                         </form>
