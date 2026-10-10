@@ -2,7 +2,7 @@
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LEVER | Science-Based Online Coaching</title>
     
     <!-- Google Fonts: Inter -->
@@ -74,6 +74,7 @@
             filter: blur(80px);
             opacity: 0.6;
             animation: liquidFloat 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform; /* Ottimizzazione Mobile */
         }
         
         .blob-1 {
@@ -94,8 +95,8 @@
             inset: 0;
             z-index: 1;
             background: rgba(17, 17, 17, 0.2);
-            backdrop-filter: blur(50px);
-            -webkit-backdrop-filter: blur(50px);
+            backdrop-filter: blur(40px); /* Leggermente ridotto per performance mobile */
+            -webkit-backdrop-filter: blur(40px);
         }
 
         @keyframes liquidFloat {
@@ -107,7 +108,7 @@
         /* --- TESTO WATERMARK SCENA 2 --- */
         .text-outline {
             color: transparent;
-            -webkit-text-stroke: 1.5px rgba(237, 237, 237, 0.1);
+            -webkit-text-stroke: 1.5px rgba(237, 237, 237, 0.15);
         }
 
         canvas {
@@ -120,9 +121,14 @@
         .btn-primary {
             transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 82, 255, 0.4);
+        @media (hover: hover) { /* Applica hover solo se il device lo supporta (no incastri su mobile) */
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px -5px rgba(0, 82, 255, 0.4);
+            }
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
         .form-input {
@@ -155,11 +161,11 @@
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
     <!-- NAV (Inizialmente invisibile e spostata in alto) -->
-    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-6 pt-6 pointer-events-none opacity-0 -translate-y-full">
-        <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-4 rounded-2xl pointer-events-auto shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 pt-4 md:pt-6 pointer-events-none opacity-0 -translate-y-full">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass px-6 md:px-8 py-4 rounded-2xl pointer-events-auto shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
             
             <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
-                <span class="text-3xl font-black tracking-widest uppercase select-none text-cobalt transition-all duration-300 group-hover:drop-shadow-[0_0_12px_#0052FF]">
+                <span class="text-2xl md:text-3xl font-black tracking-widest uppercase select-none text-cobalt transition-all duration-300 group-hover:drop-shadow-[0_0_12px_#0052FF]">
                     LEVER
                 </span>
             </a>
@@ -172,19 +178,19 @@
                 <a href="#contacts" class="hover:text-offwhite transition-colors duration-200">Contatti</a>
             </div>
             
-            <div class="flex items-center gap-5">
-                <a href="#assessment" class="text-xs font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-1">
+            <div class="flex items-center gap-4 md:gap-5">
+                <a href="#assessment" class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-1">
                     Candidati
                 </a>
-                <img src="logo.png" alt="Logo Lever" class="h-8 w-auto object-contain">
+                <img src="logo.png" alt="Logo Lever" class="h-6 md:h-8 w-auto object-contain">
             </div>
         </div>
     </nav>
 
     <main class="flex-grow">
         
-        <!-- HERO SECTION (SCENA 1 & 2) -->
-        <section id="hero-section" class="relative w-full h-screen overflow-hidden flex items-center justify-center">
+        <!-- HERO SECTION (SCENA 1 & 2) - h-[100dvh] per fixare il salto su Safari/Chrome Mobile -->
+        <section id="hero-section" class="relative w-full h-[100dvh] overflow-hidden flex items-center justify-center">
             
             <!-- LIQUID GLASS BACKGROUND (Z-0 & Z-1) -->
             <div class="liquid-bg pointer-events-none">
@@ -194,34 +200,35 @@
             <div class="glass-overlay pointer-events-none"></div>
 
             <!-- TESTO BACKGROUND SCENA 2 (Z-[15]: In primo piano rispetto all'atomo, simmetrico) -->
+            <!-- Ottimizzato text-size per mobile (10vw) e desktop (4vw) -->
             <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[15] opacity-0 pointer-events-none w-full overflow-hidden">
                 
                 <!-- Metà Sinistra per LEVER -->
-                <div class="w-1/2 h-full flex items-center justify-end pr-[12vw] md:pr-[15vw]">
-                    <h2 class="text-[6vw] md:text-[5vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
+                <div class="w-1/2 h-full flex items-center justify-end pr-[8vw] md:pr-[12vw] lg:pr-[15vw]">
+                    <h2 class="text-[10vw] md:text-[6vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
                         LEVER
                     </h2>
                 </div>
                 
                 <!-- Metà Destra per COACHING -->
-                <div class="w-1/2 h-full flex items-center justify-start pl-[12vw] md:pl-[15vw]">
-                    <h2 class="text-[6vw] md:text-[5vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
+                <div class="w-1/2 h-full flex items-center justify-start pl-[8vw] md:pl-[12vw] lg:pl-[15vw]">
+                    <h2 class="text-[10vw] md:text-[6vw] lg:text-[4vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_20px_rgba(0,82,255,0.15)] whitespace-nowrap">
                         COACHING
                     </h2>
                 </div>
                 
             </div>
 
-            <!-- CONTENITORE 3D (Z-10: In mezzo) -->
+            <!-- CONTENITORE 3D (Z-10: Dietro il testo LEVER COACHING) -->
             <div id="canvas-container" class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
                 <!-- ThreeJS canvas iniettato qui -->
             </div>
 
             <!-- TESTO ESPLOSIVO SCENA 1 (Z-20: Davanti a tutto) -->
             <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 w-full px-4 pointer-events-none">
-                <div id="title-lever" class="text-cobalt font-black text-[12vw] md:text-[10rem] uppercase tracking-tighter leading-none mb-4 drop-shadow-[0_0_20px_rgba(0,82,255,0.4)]">LEVER</div>
-                <div id="title-line1" class="text-offwhite font-black text-4xl md:text-7xl uppercase tracking-tighter leading-none mb-2 drop-shadow-lg">Ingegnerizza</div>
-                <div id="title-line2" class="text-offwhite/40 font-black text-4xl md:text-7xl uppercase tracking-tighter leading-none">I Risultati.</div>
+                <div id="title-lever" class="text-cobalt font-black text-[15vw] md:text-[10rem] uppercase tracking-tighter leading-none mb-4 drop-shadow-[0_0_20px_rgba(0,82,255,0.4)]">LEVER</div>
+                <div id="title-line1" class="text-offwhite font-black text-3xl sm:text-4xl md:text-7xl uppercase tracking-tighter leading-none mb-2 drop-shadow-lg">Ingegnerizza</div>
+                <div id="title-line2" class="text-offwhite/40 font-black text-3xl sm:text-4xl md:text-7xl uppercase tracking-tighter leading-none">I Risultati.</div>
             </div>
 
         </section>
@@ -230,60 +237,60 @@
         <div id="rest-of-page" class="opacity-0 relative z-30 bg-asphalt">
             
             <!-- FEATURE BANNER: BARBELL -->
-            <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
-                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="flex items-center gap-6">
-                        <svg viewBox="0 0 100 40" class="w-20 h-auto text-cobalt group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_#0052FF] transition-all duration-500" fill="currentColor">
+            <a href="#calculator" class="block w-full bg-[#0a0a0a] border-y border-offwhite/5 py-4 md:py-6 group cursor-pointer text-decoration-none transition-colors hover:bg-[#111] relative z-10">
+                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
+                    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                        <svg viewBox="0 0 100 40" class="w-16 md:w-20 h-auto text-cobalt group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_#0052FF] transition-all duration-500" fill="currentColor">
                             <path d="M10,15 L15,15 L15,10 L25,10 L25,30 L15,30 L15,25 L10,25 Z"/>
                             <path d="M75,10 L85,10 L85,15 L90,15 L90,25 L85,25 L85,30 L75,30 Z"/>
                             <path d="M25,18 L75,18 L75,22 L25,22 Z"/>
                         </svg>
                         <div class="flex flex-col">
-                            <span class="text-cobalt font-bold text-xs uppercase tracking-widest">Tool Integrato</span>
-                            <span class="text-offwhite font-semibold tracking-tight text-lg group-hover:text-cobalt transition-colors">Calcolatore Massimale (1RM)</span>
+                            <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest">Tool Integrato</span>
+                            <span class="text-offwhite font-semibold tracking-tight text-base md:text-lg group-hover:text-cobalt transition-colors">Calcolatore Massimale (1RM)</span>
                         </div>
                     </div>
-                    <span class="text-offwhite/50 text-sm font-medium tracking-widest uppercase flex items-center gap-2 group-hover:text-offwhite transition-colors">
+                    <span class="text-offwhite/50 text-xs md:text-sm font-medium tracking-widest uppercase flex items-center gap-2 group-hover:text-offwhite transition-colors">
                         Provalo ora <span class="text-cobalt font-black transform group-hover:translate-x-2 transition-transform">→</span>
                     </span>
                 </div>
             </a>
 
             <!-- SYSTEM SECTION -->
-            <section id="system" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
+            <section id="system" class="w-full py-16 md:py-24 px-6 border-b border-offwhite/5 relative z-10">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-20 md:w-2/3">
-                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">
+                    <div class="mb-12 md:mb-20 md:w-2/3">
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 md:mb-6">
                             La Meccanica dell'Ipertrofia.
                         </h2>
-                        <p class="text-offwhite/60 font-normal leading-relaxed text-lg max-w-2xl">
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-base md:text-lg max-w-2xl">
                             Il nostro sistema tratta il corpo umano come un problema ingegneristico. Analizziamo i vettori di forza e strutturiamo sistemi scalabili per la tua performance.
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="glass p-8 md:p-10 flex flex-col justify-between min-h-[280px] md:min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
                             <div>
-                                <div class="text-cobalt font-black text-6xl mb-6">01</div>
-                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-4 md:mb-6">01</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-tight">Analisi Cinematica</h3>
                                 <p class="text-offwhite/60 text-sm leading-loose">
                                     Decostruzione del tuo schema motorio. Identifichiamo le dispersioni di forza e le criticità articolari per ottimizzare ogni singola alzata.
                                 </p>
                             </div>
                         </div>
-                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
+                        <div class="glass p-8 md:p-10 flex flex-col justify-between min-h-[280px] md:min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
                             <div>
-                                <div class="text-cobalt font-black text-6xl mb-6">02</div>
-                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-4 md:mb-6">02</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-tight">Gestione del Carico</h3>
                                 <p class="text-offwhite/60 text-sm leading-loose">
                                     Strutturazione basata su periodizzazione a blocchi e autoregolazione. Eliminiamo il volume spazzatura concentrando lo stress meccanico dove serve.
                                 </p>
                             </div>
                         </div>
-                        <div class="glass p-10 flex flex-col justify-between min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
+                        <div class="glass p-8 md:p-10 flex flex-col justify-between min-h-[280px] md:min-h-[320px] transition-colors hover:bg-offwhite/[0.03]">
                             <div>
-                                <div class="text-cobalt font-black text-6xl mb-6">03</div>
-                                <h3 class="text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-4 md:mb-6">03</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-tight">Data Tracking</h3>
                                 <p class="text-offwhite/60 text-sm leading-loose">
                                     Monitoraggio rigoroso dei parametri. Aggiornamento continuo della programmazione in base alla reale risposta del tuo sistema nervoso centrale.
                                 </p>
@@ -294,51 +301,51 @@
             </section>
 
             <!-- CALCULATOR SECTION -->
-            <section id="calculator" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
-                <div class="max-w-5xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+            <section id="calculator" class="w-full py-16 md:py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
+                <div class="max-w-5xl mx-auto flex flex-col lg:flex-row gap-12 md:gap-16 items-center">
                     
                     <div class="lg:w-1/2">
-                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">TOOL DATA-DRIVEN</span>
-                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-6">Proietta il tuo Massimale.</h2>
-                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-6">
+                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-3 md:mb-4 block">TOOL DATA-DRIVEN</span>
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 md:mb-6">Proietta il tuo Massimale.</h2>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-4 md:mb-6">
                             Conoscere il proprio 1RM (One-Rep Max) è fondamentale per calibrare correttamente le percentuali di carico e l'intensità (RPE/RIR) all'interno del mesociclo.
                         </p>
-                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-8">
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm mb-6 md:mb-8">
                             Il tool sfrutta la <strong class="text-offwhite">Formula di Brzycki</strong>, considerata il gold standard scientifico per la stima della forza massima su un numero di ripetizioni medio-basso.
                         </p>
-                        <div class="p-4 border-l-2 border-cobalt bg-cobalt/5">
-                            <code class="text-cobalt font-bold text-sm">1RM = Peso × [ 36 / ( 37 - Ripetizioni ) ]</code>
+                        <div class="p-4 border-l-2 border-cobalt bg-cobalt/5 break-words">
+                            <code class="text-cobalt font-bold text-xs md:text-sm">1RM = Peso × [36 / (37 - Ripetizioni)]</code>
                         </div>
                     </div>
 
-                    <div class="lg:w-1/2 w-full glass p-8 md:p-12 rounded-xl relative shadow-[0_0_30px_rgba(0,82,255,0.05)]">
+                    <div class="lg:w-1/2 w-full glass p-6 md:p-12 rounded-xl relative shadow-[0_0_30px_rgba(0,82,255,0.05)]">
                         
-                        <div class="mb-6">
-                            <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Esercizio (Opzionale)</label>
-                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 rounded-none text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
+                        <div class="mb-5 md:mb-6">
+                            <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Esercizio (Opzionale)</label>
+                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-3 md:p-4 rounded-none text-lg md:text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="grid grid-cols-2 gap-3 md:gap-4 mb-5 md:mb-6">
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Peso (kg)</label>
-                                <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30">
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Peso (kg)</label>
+                                <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-3 md:p-4 rounded-none text-xl md:text-2xl font-black text-center text-cobalt placeholder-cobalt/30">
                             </div>
                             <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Ripetizioni</label>
-                                <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-4 rounded-none text-2xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2 text-center">Ripetizioni</label>
+                                <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-3 md:p-4 rounded-none text-xl md:text-2xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
                             </div>
                         </div>
                         
-                        <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mb-8">
+                        <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-xs md:text-sm uppercase tracking-widest p-4 md:p-5 rounded-none mb-6 md:mb-8">
                             Elabora Proiezione
                         </button>
                         
-                        <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
-                            <div id="calc-title" class="text-xs uppercase tracking-widest font-bold text-offwhite/50 mb-2">1RM Stimato</div>
-                            <div id="calc-result" class="text-6xl font-black tracking-tighter text-offwhite">
-                                -- <span class="text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
+                        <div class="border-t border-offwhite/10 pt-6 md:pt-8 text-center min-h-[100px] md:min-h-[120px] flex flex-col justify-center">
+                            <div id="calc-title" class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/50 mb-2">1RM Stimato</div>
+                            <div id="calc-result" class="text-5xl md:text-6xl font-black tracking-tighter text-offwhite">
+                                -- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
                             </div>
-                            <div id="calc-warning" class="text-xs text-[#ff4d4d] mt-3 hidden">
+                            <div id="calc-warning" class="text-[10px] md:text-xs text-[#ff4d4d] mt-2 md:mt-3 hidden">
                                 Inserisci valori validi.
                             </div>
                         </div>
@@ -348,434 +355,41 @@
             </section>
 
             <!-- TEAM SECTION -->
-            <section id="team" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10">
+            <section id="team" class="w-full py-16 md:py-24 px-6 border-b border-offwhite/5 relative z-10">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-16 text-center">
-                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">IL TEAM</span>
+                    <div class="mb-12 md:mb-16 text-center">
+                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-3 md:mb-4 block">IL TEAM</span>
                         <h2 class="text-3xl md:text-5xl font-bold tracking-tighter">Dietro la Metodologia</h2>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
                         <!-- Leonardo -->
-                        <div class="glass p-8 rounded-xl flex flex-col">
-                            <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                        <div class="glass p-6 md:p-8 rounded-xl flex flex-col">
+                            <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover rounded-lg mb-6 md:mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
                             
-                            <h3 class="text-3xl font-bold mb-1 tracking-tight">Leonardo</h3>
-                            <p class="text-cobalt font-medium text-sm mb-6">Biomechanical Analysis & Strategy</p>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-1 tracking-tight">Leonardo</h3>
+                            <p class="text-cobalt font-medium text-xs md:text-sm mb-5 md:mb-6">Biomechanical Analysis & Strategy</p>
                             
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Ingegneria Biomedica (2° Anno)</span>
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding</span>
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Calcio)</span>
+                            <div class="flex flex-wrap gap-2 mb-5 md:mb-6">
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[10px] md:text-[11px] uppercase tracking-wider font-semibold px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-cobalt/30">Ingegneria Biomedica (2° Anno)</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[10px] md:text-[11px] uppercase tracking-wider font-semibold px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding</span>
+                                <span class="bg-cobalt/10 text-[#4da6ff] text-[10px] md:text-[11px] uppercase tracking-wider font-semibold px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Calcio)</span>
                             </div>
                             
-                            <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
+                            <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-5 md:mb-6">
                                 Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Il suo focus è decostruire ogni alzata e traiettoria attraverso i principi dell'ingegneria e della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico riducendo lo stress articolare inutile.
                             </p>
                             
-                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
+                            <blockquote class="border-l-2 border-cobalt pl-3 md:pl-4 text-offwhite/90 italic text-xs md:text-sm">
                                 "La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."
                             </blockquote>
                         </div>
 
                         <!-- Elia -->
-                        <div class="glass p-8 rounded-xl flex flex-col">
-                            <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover rounded-lg mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
+                        <div class="glass p-6 md:p-8 rounded-xl flex flex-col">
+                            <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover rounded-lg mb-6 md:mb-8 border border-offwhite/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-[#1a1a1a] text-transparent">
                             
-                            <h3 class="text-3xl font-bold mb-1 tracking-tight">Elia</h3>
-                            <p class="text-cobalt font-medium text-sm mb-6">Kinesiology & Performance Coach</p>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-1 tracking-tight">Elia</h3>
+                            <p class="text-cobalt font-medium text-xs md:text-sm mb-5 md:mb-6">Kinesiology & Performance Coach</p>
                             
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Scienze Motorie (2° Anno)</span>
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">Istruttore PT 1° Livello</span>
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">3+ Anni Bodybuilding & Powerbuilding</span>
-                                <span class="bg-cobalt/10 text-[#4da6ff] text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full border border-cobalt/30">10+ Anni Background Sportivo (Basket)</span>
-                            </div>
-                            
-                            <p class="text-offwhite/70 text-sm leading-relaxed flex-grow mb-6">
-                                Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico pratico maturato tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia, strutturando percorsi sostenibili e orientati alla performance nel lungo periodo.
-                            </p>
-                            
-                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
-                                "La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PRICING & FORM SECTION -->
-            <section id="pricing" class="w-full py-24 px-6 border-b border-offwhite/5 relative z-10 bg-[#0a0a0a]">
-                <div class="max-w-7xl mx-auto">
-                    
-                    <div class="mb-16 text-center">
-                        <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">PACCHETTI</span>
-                        <h2 class="text-3xl md:text-5xl font-bold tracking-tighter">Scegli il tuo Percorso</h2>
-                    </div>
-
-                    <!-- GRIGLIA PREZZI A DUE COLONNE -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
-                        
-                        <!-- Programma Personalizzato -->
-                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden transition-colors">
-                            <h3 class="text-2xl font-bold mb-2 tracking-tight">Programma Personalizzato</h3>
-                            <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
-                            <div class="text-4xl font-black text-cobalt tracking-tighter mb-8">
-                                0€
-                            </div>
-                            <ul class="text-offwhite/80 space-y-4 mb-10 flex-grow">
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione science-based su misura sulle proprie esigenze</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Check iniziale e alla fine delle 8 settimane</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Accesso alla nostra community Telegram</li>
-                            </ul>
-                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-4 rounded-none text-center">
-                                Candidati Ora
-                            </a>
-                        </div>
-
-                        <!-- Coaching 1:1 -->
-                        <div class="glass p-10 text-left rounded-xl border-cobalt/50 border shadow-[0_0_30px_rgba(0,82,255,0.1)] flex flex-col relative overflow-hidden transition-colors">
-                            <div class="absolute top-0 right-0 bg-cobalt text-[10px] font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-widest">Premium</div>
-                            <h3 class="text-2xl font-bold mb-2 tracking-tight">Coaching 1:1 (Beta)</h3>
-                            <p class="text-offwhite/50 text-sm mb-6">8 Settimane</p>
-                            <div class="text-4xl font-black text-cobalt tracking-tighter mb-8">
-                                0€
-                            </div>
-                            <ul class="text-offwhite/80 space-y-4 mb-10 flex-grow">
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Programmazione 1:1 science-based su misura</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Dashboard automatizzata (Volume, Carichi, PR)</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Assistenza garantita entro 24/48h</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Check iniziale e alla fine delle 8 settimane</li>
-                                <li class="flex items-start"><span class="text-cobalt mr-3 font-bold">→</span> Accesso alla nostra community Telegram</li>
-                            </ul>
-                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-4 rounded-none text-center">
-                                Candidati Ora
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <!-- FORM -->
-                    <div id="assessment" class="glass p-8 md:p-12 rounded-xl relative overflow-hidden max-w-4xl mx-auto">
-                        <div class="mb-10 text-center relative z-10">
-                            <h2 class="text-3xl font-bold tracking-tighter mb-4">Candidati Ora</h2>
-                            <p class="text-offwhite/60 text-sm">Compila il form per permetterci di valutare il tuo punto di partenza strutturale.</p>
-                        </div>
-
-                        <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-6 relative z-10">
-                            <input type="hidden" name="_next" value="grazie.html">
-
-                            <!-- SCELTA PROGRAMMA -->
-                            <div class="mb-6">
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">A quale percorso sei interessato?</label>
-                                <div class="flex gap-8">
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="percorso" value="Programma Personalizzato" required class="accent-cobalt w-4 h-4"> Programma Personalizzato
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="percorso" value="Coaching 1:1" required class="accent-cobalt w-4 h-4"> Coaching 1:1
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- CONSIGLI ALIMENTARI SPOSTATI IN ALTO -->
-                            <div class="mb-6">
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-4">Vuoi ricevere anche consigli alimentari?</label>
-                                <div class="flex gap-8">
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-4 h-4"> Sì
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-4 h-4"> No
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Nome e Cognome</label>
-                                    <input type="text" name="name" required class="form-input w-full p-4 rounded-none text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Email</label>
-                                    <input type="email" name="email" required class="form-input w-full p-4 rounded-none text-sm">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Numero di Telefono</label>
-                                <input type="tel" name="phone" required class="form-input w-full p-4 rounded-none text-sm">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-2">Obiettivo</label>
-                                <textarea name="obiettivo" rows="2" required placeholder="Qual è il tuo obiettivo principale?" class="form-input w-full p-4 rounded-none text-sm resize-y"></textarea>
-                            </div>
-                            
-                            <!-- CALL TO ACTION SCRITTA IN GRANDE -->
-                            <div class="pt-6 pb-2 text-center">
-                                <h3 class="text-2xl md:text-3xl font-black tracking-tighter text-offwhite">
-                                    Invia la candidatura e scopri i pacchetti
-                                </h3>
-                            </div>
-
-                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-sm uppercase tracking-widest p-5 rounded-none mt-2">
-                                Invia Candidatura
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CONTACTS SECTION -->
-            <section id="contacts" class="w-full py-24 px-6 relative z-10">
-                <div class="max-w-7xl mx-auto text-center">
-                    <span class="text-cobalt font-bold text-xs uppercase tracking-widest mb-4 block">NETWORK</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-16">Entra in Contatto</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                        <a href="mailto:lever.lab.coaching@gmail.com" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-6 h-6 text-cobalt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <h3 class="font-bold mb-2 text-lg">Email Ufficiale</h3>
-                            <p class="text-offwhite/70 text-sm">lever.lab.coaching@gmail.com</p>
-                        </a>
-                        
-                        <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                            </div>
-                            <h3 class="font-bold mb-2 text-lg">Leonardo Cucchi</h3>
-                            <p class="text-offwhite/70 text-sm">@leo.cucchi</p>
-                        </a>
-                        
-                        <a href="https://instagram.com/elia_berga_" target="_blank" class="glass p-8 rounded-xl flex flex-col items-center justify-center hover:bg-offwhite/[0.03] transition-colors group text-decoration-none">
-                            <div class="w-14 h-14 bg-cobalt/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-6 h-6 text-cobalt" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                            </div>
-                            <h3 class="font-bold mb-2 text-lg">Elia</h3>
-                            <p class="text-offwhite/70 text-sm">@elia_berga_</p>
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-offwhite/10 py-12 px-6 bg-asphalt mt-auto relative z-30">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-3 group cursor-default">
-                <span class="text-xl font-black tracking-widest uppercase text-offwhite/50 group-hover:text-cobalt transition-colors duration-500">
-                    LEVER
-                </span>
-            </div>
-            <div class="text-xs font-medium uppercase tracking-widest text-offwhite/40">
-                &copy; 2026 Lever Coaching System.
-            </div>
-        </div>
-    </footer>
-
-    <!-- SCRIPTS CORE -->
-    <script>
-        // --- 1. 1RM CALCULATOR LOGIC ---
-        document.getElementById('calc-btn').addEventListener('click', function() {
-            const exerciseInput = document.getElementById('calc-exercise').value.trim();
-            const weightInput = document.getElementById('calc-weight').value;
-            const repsInput = document.getElementById('calc-reps').value;
-            
-            const titleDisplay = document.getElementById('calc-title');
-            const resultDisplay = document.getElementById('calc-result');
-            const warningDisplay = document.getElementById('calc-warning');
-
-            const weight = parseFloat(weightInput);
-            const reps = parseInt(repsInput);
-
-            warningDisplay.classList.add('hidden');
-
-            if (!weight || !reps || weight <= 0 || reps <= 0 || reps >= 37) {
-                resultDisplay.innerHTML = '-- <span class="text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>';
-                titleDisplay.innerText = "1RM STIMATO";
-                warningDisplay.classList.remove('hidden');
-                warningDisplay.textContent = "Inserisci valori validi per Peso e Ripetizioni.";
-                return;
-            }
-
-            if (reps > 12) {
-                warningDisplay.textContent = "Nota: La formula di Brzycki perde precisione oltre le 10-12 ripetizioni.";
-                warningDisplay.classList.remove('hidden');
-            }
-
-            if (exerciseInput) {
-                titleDisplay.innerText = `1RM STIMATO - ${exerciseInput.toUpperCase()}`;
-            } else {
-                titleDisplay.innerText = "1RM STIMATO";
-            }
-
-            const oneRepMax = weight * (36 / (37 - reps));
-            
-            resultDisplay.style.opacity = 0;
-            setTimeout(() => {
-                resultDisplay.innerHTML = `${Math.round(oneRepMax)} <span class="text-2xl text-cobalt font-normal tracking-normal">kg</span>`;
-                resultDisplay.style.opacity = 1;
-                resultDisplay.style.transition = "opacity 0.3s ease";
-            }, 150);
-        });
-
-        // --- 2. THREE.JS IMPLEMENTATION ---
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        
-        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.z = 14; 
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-        dirLight.position.set(5, 5, 5);
-        scene.add(dirLight);
-
-        const accentLight = new THREE.DirectionalLight(0x0052FF, 2.5);
-        accentLight.position.set(-5, -5, -2);
-        scene.add(accentLight);
-
-        // OUTER GROUP per GSAP
-        const outerGroup = new THREE.Group();
-        scene.add(outerGroup);
-
-        const group = new THREE.Group();
-        outerGroup.add(group);
-
-        const coreMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xEDEDED, roughness: 0.2, metalness: 0.8, flatShading: true
-        });
-
-        const ringMaterial = new THREE.MeshStandardMaterial({
-            color: 0x222222, roughness: 0.5, metalness: 0.9, wireframe: false
-        });
-
-        const icosahedronGeo = new THREE.IcosahedronGeometry(2, 0);
-        const icosahedron = new THREE.Mesh(icosahedronGeo, coreMaterial);
-        group.add(icosahedron);
-
-        const ring1Geo = new THREE.TorusGeometry(3.5, 0.05, 16, 100);
-        const ring1 = new THREE.Mesh(ring1Geo, ringMaterial);
-        ring1.rotation.x = Math.PI / 2;
-        group.add(ring1);
-
-        const ring2Geo = new THREE.TorusGeometry(4, 0.02, 16, 100);
-        const ring2 = new THREE.Mesh(ring2Geo, coreMaterial);
-        ring2.rotation.y = Math.PI / 3;
-        ring2.rotation.x = Math.PI / 6;
-        group.add(ring2);
-
-        const ring3Geo = new THREE.TorusGeometry(3.2, 0.08, 16, 100);
-        const ring3 = new THREE.Mesh(ring3Geo, ringMaterial);
-        ring3.rotation.y = -Math.PI / 4;
-        group.add(ring3);
-
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
-
-            group.rotation.y += 0.005;
-            group.rotation.x += 0.002;
-            icosahedron.rotation.y -= 0.008;
-            icosahedron.rotation.z += 0.003;
-            group.position.y = Math.sin(time * 0.5) * 0.2;
-
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            renderer.setSize(width, height);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-        });
-
-        // --- 3. GSAP & SCROLLTRIGGER ANIMATION ---
-        gsap.registerPlugin(ScrollTrigger);
-
-        const lines = [
-            document.getElementById('title-lever'),
-            document.getElementById('title-line1'), 
-            document.getElementById('title-line2')
-        ];
-        
-        lines.forEach(line => {
-            if (!line) return;
-            const text = line.innerText;
-            line.innerHTML = '';
-            text.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.className = 'letter';
-                span.innerHTML = char === ' ' ? '&nbsp;' : char;
-                line.appendChild(span);
-            });
-        });
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#hero-section",
-                start: "top top",
-                end: "+=1500", 
-                pin: true,     
-                scrub: 1,      
-            }
-        });
-
-        // 1. Esplosione Lettere Scena 1
-        tl.to(".letter", {
-            y: () => (Math.random() - 0.5) * 1000, 
-            x: () => (Math.random() - 0.5) * 1000, 
-            rotationZ: () => (Math.random() - 0.5) * 720, 
-            opacity: 0,
-            stagger: 0.005,
-            ease: "power2.out",
-            duration: 1
-        }, 0);
-
-        // 2. Rotazione Atomo 3D
-        tl.to(outerGroup.rotation, {
-            y: Math.PI * 2,
-            x: Math.PI * 0.2, 
-            ease: "power1.inOut",
-            duration: 1.5
-        }, 0);
-
-        // 3. Dissolvenza Testo Background "LEVER.COACHING" (Dietro atomo)
-        tl.to("#scene2-text", {
-            opacity: 1,
-            duration: 0.5,
-            ease: "power2.out"
-        }, 1.0);
-
-        // 4. Discesa Barra Navigazione
-        tl.to("#main-nav", { 
-            y: 0, 
-            opacity: 1, 
-            duration: 0.3,
-            ease: "power2.out"
-        }, 1.2);
-
-        // 5. Apparizione Resto del Sito (Bilanciere, Sezioni...)
-        tl.to("#rest-of-page", { 
-            opacity: 1, 
-            duration: 0.5 
-        }, 1.2); 
-
-    </script>
-</body>
-</html>
+                            <div class="flex flex-wrap gap-2 mb-5 md:
