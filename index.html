@@ -708,3 +708,246 @@
                         );
                     });
                 }, 100);
+
+                // Preparazione Testo per Esplosione GSAP
+                const lines = [
+                    document.getElementById('title-lever'),
+                    document.getElementById('title-line1'), 
+                    document.getElementById('title-line2')
+                ];
+                
+                lines.forEach(line => {
+                    if (!line) return;
+                    const text = line.innerText;
+                    line.innerHTML = '';
+                    text.split('').forEach(char => {
+                        const span = document.createElement('span');
+                        span.className = 'letter';
+                        span.innerHTML = char === ' ' ? '&nbsp;' : char;
+                        line.appendChild(span);
+                    });
+                });
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#hero-section",
+                        start: "top top",
+                        end: "+=1500", 
+                        pin: true,     
+                        scrub: 1.5, 
+                    }
+                });
+
+                // 1. Esplosione fluida
+                tl.to(".letter", {
+                    y: () => (Math.random() - 0.5) * 1200, 
+                    x: () => (Math.random() - 0.5) * 1200, 
+                    rotationZ: () => (Math.random() - 0.5) * 720, 
+                    opacity: 0,
+                    stagger: 0.004,
+                    ease: "power3.out",
+                    duration: 1.2
+                }, 0);
+
+                // Il resto della timeline è gestito sotto insieme al 3D...
+            }
+
+            // --- 1RM CALCULATOR LOGIC ---
+            const calcBtn = document.getElementById('calc-btn');
+            if (calcBtn) {
+                calcBtn.addEventListener('click', function() {
+                    const exerciseInput = document.getElementById('calc-exercise').value.trim();
+                    const weightInput = document.getElementById('calc-weight').value;
+                    const repsInput = document.getElementById('calc-reps').value;
+                    
+                    const titleDisplay = document.getElementById('calc-title');
+                    const resultDisplay = document.getElementById('calc-result');
+                    const warningDisplay = document.getElementById('calc-warning');
+
+                    const weight = parseFloat(weightInput);
+                    const reps = parseInt(repsInput);
+
+                    warningDisplay.classList.add('hidden');
+
+                    if (!weight || !reps || weight <= 0 || reps <= 0 || reps >= 37) {
+                        resultDisplay.innerHTML = '-- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>';
+                        titleDisplay.innerText = "STIMA DEL SISTEMA";
+                        warningDisplay.classList.remove('hidden');
+                        warningDisplay.textContent = "Errore: Inserisci parametri operativi validi.";
+                        return;
+                    }
+
+                    if (reps > 12) {
+                        warningDisplay.textContent = "Nota: La formula di Brzycki disperde precisione oltre le 12 reps.";
+                        warningDisplay.classList.remove('hidden');
+                    }
+
+                    if (exerciseInput) {
+                        titleDisplay.innerText = `PROIEZIONE - ${exerciseInput.toUpperCase()}`;
+                    } else {
+                        titleDisplay.innerText = "PROIEZIONE 1RM";
+                    }
+
+                    const oneRepMax = weight * (36 / (37 - reps));
+                    
+                    resultDisplay.style.opacity = 0;
+                    resultDisplay.style.transform = "scale(0.95)";
+                    
+                    setTimeout(() => {
+                        resultDisplay.innerHTML = `${Math.round(oneRepMax)} <span class="text-xl md:text-3xl text-cobalt font-normal tracking-normal">kg</span>`;
+                        resultDisplay.style.opacity = 1;
+                        resultDisplay.style.transform = "scale(1)";
+                        resultDisplay.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)";
+                    }, 150);
+                });
+            }
+
+            // --- THREE.JS INTERACTIVE IMPLEMENTATION ---
+            if (typeof THREE !== 'undefined') {
+                const container = document.getElementById('canvas-container');
+                const scene = new THREE.Scene();
+                
+                const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.z = 14; 
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
+                container.appendChild(renderer.domElement);
+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+                scene.add(ambientLight);
+
+                const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+                dirLight.position.set(5, 5, 5);
+                scene.add(dirLight);
+
+                const accentLight = new THREE.DirectionalLight(0x0052FF, 3); 
+                accentLight.position.set(-5, -5, -2);
+                scene.add(accentLight);
+
+                const outerGroup = new THREE.Group();
+                scene.add(outerGroup);
+                const group = new THREE.Group();
+                outerGroup.add(group);
+
+                const coreMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xEDEDED, roughness: 0.1, metalness: 0.9, flatShading: true 
+                });
+                const ringMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x111111, roughness: 0.4, metalness: 1, wireframe: false
+                });
+
+                const icosahedronGeo = new THREE.IcosahedronGeometry(2, 0);
+                const icosahedron = new THREE.Mesh(icosahedronGeo, coreMaterial);
+                group.add(icosahedron);
+
+                const ring1 = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.03, 16, 100), ringMaterial);
+                ring1.rotation.x = Math.PI / 2;
+                group.add(ring1);
+
+                const ring2 = new THREE.Mesh(new THREE.TorusGeometry(4, 0.015, 16, 100), coreMaterial);
+                ring2.rotation.y = Math.PI / 3;
+                ring2.rotation.x = Math.PI / 6;
+                group.add(ring2);
+
+                const ring3 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.05, 16, 100), ringMaterial);
+                ring3.rotation.y = -Math.PI / 4;
+                group.add(ring3);
+
+                // WOW FACTOR: PARALLAX 3D
+                let mouseX = 0;
+                let mouseY = 0;
+                let targetX = 0;
+                let targetY = 0;
+                const windowHalfX = window.innerWidth / 2;
+                const windowHalfY = window.innerHeight / 2;
+
+                document.addEventListener('mousemove', (event) => {
+                    mouseX = (event.clientX - windowHalfX) * 0.001;
+                    mouseY = (event.clientY - windowHalfY) * 0.001;
+                });
+
+                document.addEventListener('touchmove', (event) => {
+                    if(event.touches.length > 0) {
+                        mouseX = (event.touches[0].clientX - windowHalfX) * 0.0015;
+                        mouseY = (event.touches[0].clientY - windowHalfY) * 0.0015;
+                    }
+                });
+
+                const clock = new THREE.Clock();
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const time = clock.getElapsedTime();
+
+                    targetX = mouseX * 0.5;
+                    targetY = mouseY * 0.5;
+                    
+                    group.rotation.y += 0.003 + (targetX - group.rotation.y) * 0.05;
+                    group.rotation.x += 0.001 + (targetY - group.rotation.x) * 0.05;
+                    
+                    icosahedron.rotation.y -= 0.005;
+                    icosahedron.rotation.z += 0.002;
+                    
+                    group.position.y = Math.sin(time * 0.8) * 0.15;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                let lastWidth = window.innerWidth;
+                window.addEventListener('resize', () => {
+                    if(window.innerWidth !== lastWidth) {
+                        const width = container.clientWidth;
+                        const height = container.clientHeight;
+                        renderer.setSize(width, height);
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        lastWidth = window.innerWidth;
+                    }
+                });
+
+                // Colleghiamo la rotazione finale di GSAP all'outerGroup del 3D
+                if (typeof gsap !== 'undefined') {
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: "#hero-section",
+                            start: "top top",
+                            end: "+=1500", 
+                            scrub: 1.5, 
+                        }
+                    });
+
+                    tl.to(outerGroup.rotation, {
+                        y: Math.PI * 2,
+                        x: Math.PI * 0.1, 
+                        ease: "power2.inOut",
+                        duration: 1.5
+                    }, 0);
+
+                    tl.to("#scene2-text", {
+                        opacity: 1,
+                        scale: 1.05,
+                        duration: 0.8,
+                        ease: "power2.out"
+                    }, 0.8);
+
+                    tl.to("#main-nav", { 
+                        y: 0, 
+                        opacity: 1, 
+                        duration: 0.4,
+                        ease: "back.out(1.2)"
+                    }, 1.2);
+
+                    tl.to("#rest-of-page", { 
+                        opacity: 1, 
+                        duration: 0.5 
+                    }, 1.2);
+                }
+            }
+
+        }); // Fine DOMContentLoaded
+    </script>
+</body>
+</html>
