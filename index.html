@@ -44,14 +44,13 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Wrapper globale per contenere l'overflow in sicurezza rispetto a GSAP */
         .site-wrapper {
             overflow-x: hidden;
             width: 100%;
             position: relative;
         }
 
-        /* --- TREND 2026: CINEMATIC NOISE OVERLAY --- */
+        /* --- TEXTURE NOISE --- */
         .noise-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -72,7 +71,7 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- EFFETTO APPLE LIQUID GLASS --- */
+        /* --- LIQUID BACKGROUND --- */
         .liquid-bg {
             position: absolute;
             inset: 0;
@@ -131,11 +130,14 @@
             outline: none;
         }
 
-        /* --- BOTTONI E FORM --- */
+        /* --- EFFETTI UI PREMIUM 2026 --- */
+
+        /* 1. Pulsante Base */
         .btn-primary {
             position: relative;
             overflow: hidden;
             transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+            will-change: transform;
         }
         .btn-primary::after {
             content: '';
@@ -151,18 +153,77 @@
             100% { left: 200%; } 
         }
 
+        /* 2. Pulsazione Haptic per Mobile (Neuromarketing) */
+        .mobile-pulse {
+            animation: breathingGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes breathingGlow {
+            0% { box-shadow: 0 5px 15px -10px rgba(0,82,255,0.3); }
+            100% { box-shadow: 0 10px 30px -5px rgba(0,82,255,0.7); }
+        }
+
+        /* 3. Mouse Spotlight Tracking sulle Card (Stile Linear/Apple) */
+        .spotlight-card {
+            position: relative;
+        }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(0, 82, 255, 0.15), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+        .spotlight-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 4. Raggio Laser rotante per la Premium Card */
+        .premium-wrapper {
+            position: relative;
+            border-radius: 1.5rem;
+            padding: 1px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: transparent;
+        }
+        .premium-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent 70%, #0052FF 100%);
+            animation: laser-spin 4s linear infinite;
+            z-index: 0;
+        }
+        .premium-wrapper .glass-card {
+            background-color: rgba(10, 10, 10, 0.95); /* Schermo scuro per nascondere l'interno del raggio */
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+            margin: 0;
+        }
+        @keyframes laser-spin {
+            100% { transform: rotate(360deg); }
+        }
+
         @media (hover: hover) {
             .btn-primary:hover {
                 transform: translateY(-3px);
-                box-shadow: 0 15px 30px -5px rgba(0, 82, 255, 0.5);
             }
             .glass-card:hover {
                 border-color: rgba(0, 82, 255, 0.4);
-                box-shadow: 0 0 40px -10px rgba(0, 82, 255, 0.15);
                 transform: translateY(-2px);
             }
         }
-        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:active { transform: scale(0.97) !important; }
 
         .form-input {
             background: rgba(255, 255, 255, 0.02);
@@ -184,14 +245,11 @@
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
-    <!-- TEXTURE CINEMATOGRAFICA -->
     <div class="noise-overlay"></div>
 
     <div class="site-wrapper flex-grow flex flex-col">
-        <!-- NAV OTTIMIZZATA MOBILE & DESKTOP (classi iniziali pulite, gestite da GSAP) -->
         <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:px-6 md:pt-6 pointer-events-none">
             <div class="max-w-7xl mx-auto glass rounded-2xl md:rounded-full pointer-events-auto p-4 md:px-8 md:py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
-                
                 <div class="flex justify-between items-center w-full md:w-auto">
                     <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
                         <span class="text-2xl md:text-3xl font-black tracking-widest uppercase select-none text-cobalt transition-all duration-300 group-hover:drop-shadow-[0_0_15px_#0052FF]">
@@ -202,7 +260,6 @@
                         <a href="#assessment" class="text-[10px] font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-0.5">
                             Candidati
                         </a>
-                        <!-- Logo Mobile ripristinato a logo.png come in origine -->
                         <img src="logo.png" alt="Logo Lever" class="h-6 w-auto object-contain">
                     </div>
                 </div>
@@ -219,7 +276,6 @@
                     <a href="#assessment" class="text-xs font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-1">
                         Candidati
                     </a>
-                    <!-- Logo Desktop ripristinato a logo.png come in origine -->
                     <img src="logo.png" alt="Logo Lever" class="h-8 w-auto object-contain">
                 </div>
             </div>
@@ -228,7 +284,6 @@
         <main class="flex-grow">
             <!-- HERO SECTION -->
             <section id="hero-section" class="relative w-full h-[100dvh] flex items-center justify-center">
-                
                 <div class="liquid-bg pointer-events-none">
                     <div class="blob blob-1"></div>
                     <div class="blob blob-2"></div>
@@ -291,7 +346,7 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                            <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
+                            <div class="glass glass-card spotlight-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
                                 <div>
                                     <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">01</div>
                                     <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
@@ -300,7 +355,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
+                            <div class="glass glass-card spotlight-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
                                 <div>
                                     <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">02</div>
                                     <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
@@ -309,7 +364,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
+                            <div class="glass glass-card spotlight-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl h-full">
                                 <div>
                                     <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">03</div>
                                     <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
@@ -340,13 +395,13 @@
                             </div>
                         </div>
 
-                        <div class="lg:w-1/2 w-full glass p-8 md:p-12 rounded-3xl relative shadow-[0_0_50px_rgba(0,82,255,0.08)]">
-                            <div class="mb-6">
+                        <div class="lg:w-1/2 w-full glass glass-card spotlight-card p-8 md:p-12 rounded-3xl relative shadow-[0_0_50px_rgba(0,82,255,0.08)]">
+                            <div class="mb-6 relative z-10">
                                 <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Esercizio (Opzionale)</label>
                                 <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 md:p-5 rounded-xl text-lg md:text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4 md:gap-6 mb-8">
+                            <div class="grid grid-cols-2 gap-4 md:gap-6 mb-8 relative z-10">
                                 <div>
                                     <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Peso (kg)</label>
                                     <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 md:p-5 rounded-xl text-2xl md:text-3xl font-black text-center text-cobalt placeholder-cobalt/30">
@@ -357,11 +412,11 @@
                                 </div>
                             </div>
                             
-                            <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-xs md:text-sm uppercase tracking-widest p-5 rounded-xl mb-8">
+                            <button id="calc-btn" class="btn-primary mobile-pulse relative z-10 w-full bg-cobalt text-offwhite font-bold text-xs md:text-sm uppercase tracking-widest p-5 rounded-xl mb-8">
                                 Elabora Proiezione
                             </button>
                             
-                            <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
+                            <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center relative z-10">
                                 <div id="calc-title" class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/40 mb-3">1RM Stimato</div>
                                 <div id="calc-result" class="text-6xl md:text-7xl font-black tracking-tighter text-offwhite drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
                                     -- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
@@ -382,51 +437,49 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-                            <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
-                                <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                    <!-- Ripristinato LEONARDO.JPG maiuscolo -->
+                            <div class="glass glass-card spotlight-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
+                                <div class="relative overflow-hidden rounded-2xl mb-8 group z-10">
                                     <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
                                     <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
                                 </div>
                                 
-                                <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Leonardo</h3>
-                                <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Biomechanical Analysis & Strategy</p>
+                                <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight z-10">Leonardo</h3>
+                                <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6 z-10">Biomechanical Analysis & Strategy</p>
                                 
-                                <div class="flex flex-wrap gap-2 mb-8">
+                                <div class="flex flex-wrap gap-2 mb-8 z-10">
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Ingegneria Biomedica (2° Anno)</span>
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">3+ Anni Bodybuilding</span>
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">10+ Anni Background Sportivo (Calcio)</span>
                                 </div>
                                 
-                                <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8">
+                                <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8 z-10">
                                     Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Il suo focus è decostruire ogni alzata e traiettoria attraverso i principi dell'ingegneria e della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico riducendo lo stress articolare inutile.
                                 </p>
-                                <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm mt-auto">
+                                <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm mt-auto z-10">
                                     "La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."
                                 </blockquote>
                             </div>
 
-                            <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
-                                <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                    <!-- Ripristinato ELIA.jpg maiuscolo/minuscolo originale -->
+                            <div class="glass glass-card spotlight-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
+                                <div class="relative overflow-hidden rounded-2xl mb-8 group z-10">
                                     <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
                                     <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
                                 </div>
                                 
-                                <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Elia</h3>
-                                <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Kinesiology & Performance Coach</p>
+                                <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight z-10">Elia</h3>
+                                <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6 z-10">Kinesiology & Performance Coach</p>
                                 
-                                <div class="flex flex-wrap gap-2 mb-8">
+                                <div class="flex flex-wrap gap-2 mb-8 z-10">
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Scienze Motorie (2° Anno)</span>
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Istruttore PT 1° Livello</span>
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">3+ Anni Bodybuilding & Powerbuilding</span>
                                     <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">10+ Anni Background Sportivo (Basket)</span>
                                 </div>
                                 
-                                <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8">
+                                <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8 z-10">
                                     Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico pratico maturato tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia, strutturando percorsi sostenibili e orientati alla performance nel lungo periodo.
                                 </p>
-                                <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm mt-auto">
+                                <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm mt-auto z-10">
                                     "La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."
                                 </blockquote>
                             </div>
@@ -441,36 +494,40 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl mx-auto mb-16 md:mb-24">
-                            <div class="glass glass-card p-8 md:p-12 text-left rounded-3xl border border-cobalt/40 shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col relative overflow-hidden transition-all duration-500 h-full">
-                                <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Programma Personalizzato</h3>
-                                <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">8 Settimane</p>
+                            <!-- Card Base con Spotlight Tracking -->
+                            <div class="glass glass-card spotlight-card p-8 md:p-12 text-left rounded-3xl border border-cobalt/40 shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col relative overflow-hidden transition-all duration-500 h-full">
+                                <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight z-10">Programma Personalizzato</h3>
+                                <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8 z-10">8 Settimane</p>
                                 
-                                <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
+                                <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow z-10">
                                     <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione science-based su misura sulle proprie esigenze</span></li>
                                     <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check iniziale e alla fine delle 8 settimane</span></li>
                                     <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso alla nostra community Telegram</span></li>
                                 </ul>
-                                <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto">
-                                    Candidati
+                                <a href="#assessment" class="btn-primary mobile-pulse w-full bg-cobalt text-offwhite font-bold text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto z-10">
+                                    CANDIDATI E SCOPRI I PREZZI
                                 </a>
                             </div>
 
-                            <div class="glass glass-card p-8 md:p-12 text-left rounded-3xl border border-cobalt/40 shadow-[0_0_50px_rgba(0,82,255,0.15)] flex flex-col relative overflow-hidden transition-all duration-500 h-full">
-                                <div class="absolute top-0 right-0 bg-cobalt text-[9px] md:text-[10px] font-black px-5 md:px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-cobalt/50">Premium</div>
-                                
-                                <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Coaching 1:1 (Beta)</h3>
-                                <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">8 Settimane</p>
-                                
-                                <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
-                                    <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione 1:1 science-based su misura</span></li>
-                                    <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug text-white font-semibold">Dashboard automatizzata (Volume, Carichi, PR)</span></li>
-                                    <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Assistenza garantita entro 24/48h</span></li>
-                                    <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check iniziale e alla fine delle 8 settimane</span></li>
-                                    <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso alla nostra community Telegram</span></li>
-                                </ul>
-                                <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto">
-                                    Candidati
-                                </a>
+                            <!-- Card Premium con Raggio Laser Rotante (Decoy Effect) -->
+                            <div class="premium-wrapper">
+                                <div class="glass glass-card spotlight-card p-8 md:p-12 text-left rounded-3xl shadow-[0_0_50px_rgba(0,82,255,0.15)] flex flex-col relative overflow-hidden transition-all duration-500 h-full">
+                                    <div class="absolute top-0 right-0 bg-cobalt text-[9px] md:text-[10px] font-black px-5 md:px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-cobalt/50 z-20">Premium</div>
+                                    
+                                    <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight z-10">Coaching 1:1 (Beta)</h3>
+                                    <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8 z-10">8 Settimane</p>
+                                    
+                                    <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow z-10">
+                                        <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione 1:1 science-based su misura</span></li>
+                                        <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug text-white font-semibold">Dashboard automatizzata (Volume, Carichi, PR)</span></li>
+                                        <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Assistenza garantita entro 24/48h</span></li>
+                                        <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check iniziale e alla fine delle 8 settimane</span></li>
+                                        <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso alla nostra community Telegram</span></li>
+                                    </ul>
+                                    <a href="#assessment" class="btn-primary mobile-pulse w-full bg-cobalt text-offwhite font-bold text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto z-10">
+                                        CANDIDATI E SCOPRI I PREZZI
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -532,8 +589,9 @@
                                     <textarea name="obiettivo" rows="3" required placeholder="es. mettere massa muscolare, ricomposizione corporea ecc.." class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base resize-none bg-[#0a0a0a] placeholder-offwhite/20"></textarea>
                                 </div>
 
-                                <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-black text-sm md:text-base uppercase tracking-widest p-5 md:p-6 rounded-xl shadow-[0_15px_40px_-10px_rgba(0,82,255,0.6)] mt-8">
-                                    INVIA CANDIDATURA
+                                <!-- Bottone Magnetico Submit -->
+                                <button type="submit" id="magnetic-submit" class="btn-primary mobile-pulse w-full bg-cobalt text-offwhite font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-widest p-5 md:p-6 rounded-xl shadow-[0_15px_40px_-10px_rgba(0,82,255,0.6)] mt-8">
+                                    INVIA CANDIDATURA E SCOPRI I PERCORSI
                                 </button>
                             </form>
                         </div>
@@ -546,28 +604,28 @@
                         <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-16">Entra nel Sistema</h2>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-                            <a href="mailto:lever.lab.coaching@gmail.com" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none sm:col-span-2 md:col-span-1">
-                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <a href="mailto:lever.lab.coaching@gmail.com" class="glass glass-card spotlight-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none sm:col-span-2 md:col-span-1">
+                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 z-10">
                                     <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                 </div>
-                                <h3 class="font-bold mb-2 text-lg md:text-xl">Email Ufficiale</h3>
-                                <p class="text-offwhite/50 text-xs md:text-sm break-all font-medium">lever.lab.coaching@gmail.com</p>
+                                <h3 class="font-bold mb-2 text-lg md:text-xl z-10">Email Ufficiale</h3>
+                                <p class="text-offwhite/50 text-xs md:text-sm break-all font-medium z-10">lever.lab.coaching@gmail.com</p>
                             </a>
                             
-                            <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
-                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass glass-card spotlight-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
+                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 z-10">
                                     <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                                 </div>
-                                <h3 class="font-bold mb-2 text-lg md:text-xl">Leonardo Cucchi</h3>
-                                <p class="text-offwhite/50 text-xs md:text-sm font-medium">@leo.cucchi</p>
+                                <h3 class="font-bold mb-2 text-lg md:text-xl z-10">Leonardo Cucchi</h3>
+                                <p class="text-offwhite/50 text-xs md:text-sm font-medium z-10">@leo.cucchi</p>
                             </a>
                             
-                            <a href="https://instagram.com/elia_berga_" target="_blank" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
-                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <a href="https://instagram.com/elia_berga_" target="_blank" class="glass glass-card spotlight-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
+                                <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 z-10">
                                     <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                                 </div>
-                                <h3 class="font-bold mb-2 text-lg md:text-xl">Elia</h3>
-                                <p class="text-offwhite/50 text-xs md:text-sm font-medium">@elia_berga_</p>
+                                <h3 class="font-bold mb-2 text-lg md:text-xl z-10">Elia</h3>
+                                <p class="text-offwhite/50 text-xs md:text-sm font-medium z-10">@elia_berga_</p>
                             </a>
                         </div>
                     </div>
@@ -589,20 +647,45 @@
         </footer>
     </div>
 
-    <!-- LIBRERIE SPOSTATE IN FONDO PER NON BLOCCARE IL CARICAMENTO -->
+    <!-- LIBRERIE CORE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
-        // Sincronizzato per avviarsi al caricamento completato (load) per la massima stabilità
         window.addEventListener('load', () => {
 
-            // Inizializzazione sicura: evita "sezioni invisibili" in caso di errori JS
+            // --- INIZIALIZZAZIONE ---
             gsap.set("#main-nav", { y: "-100%", opacity: 0 });
             gsap.set("#scene2-text", { opacity: 0 });
             gsap.set("#rest-of-page", { opacity: 0 });
 
+            // --- SPOTLIGHT TRACKING (Linear Effect) ---
+            document.querySelectorAll('.spotlight-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+
+            // --- PULSANTE MAGNETICO (Form) ---
+            const magBtn = document.getElementById('magnetic-submit');
+            if(magBtn && window.matchMedia("(min-width: 768px)").matches) {
+                magBtn.addEventListener('mousemove', (e) => {
+                    const rect = magBtn.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) - rect.width / 2;
+                    const y = (e.clientY - rect.top) - rect.height / 2;
+                    gsap.to(magBtn, { x: x * 0.2, y: y * 0.2, duration: 0.3, ease: "power2.out" });
+                });
+                magBtn.addEventListener('mouseleave', () => {
+                    gsap.to(magBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                });
+            }
+
+            // --- 1RM CALCULATOR ---
             const calcBtn = document.getElementById('calc-btn');
             if (calcBtn) {
                 calcBtn.addEventListener('click', function() {
@@ -628,16 +711,11 @@
                     }
 
                     if (reps > 12) {
-                        warningDisplay.textContent = "Nota: La formula di Brzycki disperde precisione oltre le 12 reps.";
+                        warningDisplay.textContent = "Nota: La formula disperde precisione oltre le 12 reps.";
                         warningDisplay.classList.remove('hidden');
                     }
 
-                    if (exerciseInput) {
-                        titleDisplay.innerText = `PROIEZIONE - ${exerciseInput.toUpperCase()}`;
-                    } else {
-                        titleDisplay.innerText = "PROIEZIONE 1RM";
-                    }
-
+                    titleDisplay.innerText = exerciseInput ? `PROIEZIONE - ${exerciseInput.toUpperCase()}` : "PROIEZIONE 1RM";
                     const oneRepMax = weight * (36 / (37 - reps));
                     
                     resultDisplay.style.opacity = 0;
@@ -652,6 +730,7 @@
                 });
             }
 
+            // --- THREE.JS ANIMATION ---
             if (typeof THREE !== 'undefined') {
                 const container = document.getElementById('canvas-container');
                 const scene = new THREE.Scene();
@@ -680,12 +759,8 @@
                 const group = new THREE.Group();
                 outerGroup.add(group);
 
-                const coreMaterial = new THREE.MeshStandardMaterial({ 
-                    color: 0xEDEDED, roughness: 0.1, metalness: 0.9, flatShading: true 
-                });
-                const ringMaterial = new THREE.MeshStandardMaterial({
-                    color: 0x111111, roughness: 0.4, metalness: 1, wireframe: false
-                });
+                const coreMaterial = new THREE.MeshStandardMaterial({ color: 0xEDEDED, roughness: 0.1, metalness: 0.9, flatShading: true });
+                const ringMaterial = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.4, metalness: 1, wireframe: false });
 
                 const icosahedronGeo = new THREE.IcosahedronGeometry(2, 0);
                 const icosahedron = new THREE.Mesh(icosahedronGeo, coreMaterial);
@@ -708,15 +783,11 @@
                 function animate() {
                     requestAnimationFrame(animate);
                     const time = clock.getElapsedTime();
-                    
                     group.rotation.y += 0.003;
                     group.rotation.x += 0.001;
-                    
                     icosahedron.rotation.y -= 0.005;
                     icosahedron.rotation.z += 0.002;
-                    
                     group.position.y = Math.sin(time * 0.8) * 0.15;
-
                     renderer.render(scene, camera);
                 }
                 animate();
@@ -730,10 +801,11 @@
                         camera.aspect = width / height;
                         camera.updateProjectionMatrix();
                         lastWidth = window.innerWidth;
-                        ScrollTrigger.refresh(); // Allinea dinamicamente in caso di cambio orientamento
+                        ScrollTrigger.refresh();
                     }
                 });
 
+                // --- GSAP TIMELINE ---
                 if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                     gsap.registerPlugin(ScrollTrigger);
 
@@ -755,7 +827,6 @@
                         });
                     });
 
-                    // Timeline animazione Hero ottimizzata contro blocchi
                     const tl = gsap.timeline({
                         scrollTrigger: {
                             trigger: "#hero-section",
@@ -763,7 +834,7 @@
                             end: "+=1500", 
                             pin: true,
                             pinSpacing: true,
-                            anticipatePin: 1, // Fix critico per il glitch dello scroll su mobile
+                            anticipatePin: 1,
                             scrub: 1.5
                         }
                     });
@@ -785,25 +856,9 @@
                         duration: 1.5
                     }, 0);
 
-                    tl.to("#scene2-text", {
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    }, 1.0);
-
-                    tl.to("#main-nav", { 
-                        y: "0%", 
-                        opacity: 1, 
-                        duration: 0.3,
-                        ease: "power2.out"
-                    }, 1.2);
-                    
-                    // Rende visibile il resto della pagina al completamento
-                    tl.to("#rest-of-page", {
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    }, 1.2);
+                    tl.to("#scene2-text", { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.0);
+                    tl.to("#main-nav", { y: "0%", opacity: 1, duration: 0.3, ease: "power2.out" }, 1.2);
+                    tl.to("#rest-of-page", { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.2);
                 }
             }
         }); 
