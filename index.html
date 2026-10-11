@@ -51,7 +51,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Barra di progresso dello scroll (Wow Factor Elite) */
+        /* Barra di progresso dello scroll */
         #scroll-progress {
             position: fixed;
             top: 0; left: 0; width: 0%; height: 3px;
@@ -61,7 +61,7 @@
             transition: width 0.1s ease-out;
         }
 
-        /* --- TREND 2026: CINEMATIC NOISE OVERLAY --- */
+        /* Effetto grana cinematografica (Lusso digitale) */
         .noise-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -80,11 +80,11 @@
             transition: background 0.3s ease;
         }
 
-        /* Navigazione Swipeable Mobile */
+        /* Nasconde le barre di scorrimento su mobile */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- EFFETTO APPLE LIQUID GLASS --- */
+        /* Sfondo Liquido Apple */
         .liquid-bg {
             position: absolute;
             inset: 0;
@@ -131,7 +131,6 @@
             100% { transform: translate(-5%, 5%) scale(0.9) rotate(-5deg); }
         }
 
-        /* --- TESTO WATERMARK --- */
         .text-outline {
             color: transparent;
             -webkit-text-stroke: 1.5px rgba(237, 237, 237, 0.15);
@@ -144,7 +143,7 @@
             outline: none;
         }
 
-        /* --- BOTTONI E INPUT --- */
+        /* Bottoni Animati */
         .btn-primary {
             position: relative;
             overflow: hidden;
@@ -195,7 +194,7 @@
         
         .letter { display: inline-block; will-change: transform, opacity; }
 
-        /* --- RADIO BUTTONS CUSTOM (Pallini Azzurri Uniformi) --- */
+        /* Pallini Azzurri per il form */
         .custom-radio {
             -webkit-appearance: none;
             appearance: none;
@@ -224,22 +223,23 @@
             border-radius: 50%;
             box-shadow: 0 0 8px rgba(0, 82, 255, 0.6);
         }
+        
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+        }
     </style>
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
 
-    <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
-
-    <!-- TEXTURE CINEMATOGRAFICA -->
     <div class="noise-overlay"></div>
 
-    <!-- WRAPPER PER EVITARE GLITCH DI SCROLL SU MOBILE -->
     <div class="overflow-x-hidden w-full relative flex-grow flex flex-col">
 
-        <!-- NAV -->
-        <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:px-6 md:pt-6 pointer-events-none opacity-0 -translate-y-full">
-            <div class="max-w-7xl mx-auto glass rounded-2xl md:rounded-full pointer-events-auto p-4 md:px-8 md:py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+        <!-- NAV: VISIBILE DI DEFAULT -->
+        <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:px-6 md:pt-6 pointer-events-auto">
+            <div class="max-w-7xl mx-auto glass rounded-2xl md:rounded-full p-4 md:px-8 md:py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
                 
                 <div class="flex justify-between items-center w-full md:w-auto">
                     <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
@@ -255,9 +255,9 @@
                     </div>
                 </div>
                 
-                <!-- Link Visibili -->
                 <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-8 font-medium text-[11px] md:text-sm tracking-wide text-offwhite/80 w-full md:w-auto">
                     <a href="#system" class="hover:text-offwhite hover:scale-105 transition-all duration-200">Metodologia</a>
+                    <!-- Modificato: Calcolatore Massimale -->
                     <a href="#calculator" class="text-cobalt font-semibold hover:text-offwhite hover:scale-105 transition-all duration-200">Calcolatore Massimale</a>
                     <a href="#team" class="hover:text-offwhite hover:scale-105 transition-all duration-200">Il Team</a>
                     <a href="#pricing" class="hover:text-offwhite hover:scale-105 transition-all duration-200">Percorsi</a>
@@ -273,7 +273,7 @@
             </div>
         </nav>
 
-        <!-- HERO SECTION (SCENA 1 & 2) -->
+        <!-- HERO SECTION -->
         <section id="hero-section" class="relative w-full h-[100dvh] overflow-hidden flex items-center justify-center">
             
             <div class="liquid-bg pointer-events-none">
@@ -282,11 +282,10 @@
             </div>
             <div class="glass-overlay pointer-events-none"></div>
 
-            <!-- CONTENITORE 3D (Z-10: Dietro il testo LEVER COACHING) -->
             <div id="canvas-container" class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"></div>
 
-            <!-- TESTO BACKGROUND SCENA 2 (Z-[15]: In primo piano rispetto all'atomo, simmetrico) -->
-            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[15] opacity-0 pointer-events-none w-full overflow-hidden">
+            <!-- TESTO IN PRIMO PIANO rispetto all'atomo -->
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[15] pointer-events-none w-full overflow-hidden">
                 <div class="w-1/2 h-full flex items-center justify-end pr-[6vw] md:pr-[10vw]">
                     <h2 class="text-[12vw] md:text-[7vw] lg:text-[5vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_30px_rgba(0,82,255,0.2)] whitespace-nowrap">
                         LEVER
@@ -299,7 +298,7 @@
                 </div>
             </div>
 
-            <!-- TESTO ESPLOSIVO SCENA 1 (Z-20) -->
+            <!-- TESTO ESPLOSIVO (Si dissolve allo scroll) -->
             <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 w-full px-4 pointer-events-none">
                 <div id="title-lever" class="text-cobalt font-black text-[18vw] md:text-[11rem] uppercase tracking-tighter leading-none mb-2 md:mb-4 drop-shadow-[0_0_40px_rgba(0,82,255,0.5)] mix-blend-screen">LEVER</div>
                 <div id="title-line1" class="text-offwhite font-black text-3xl sm:text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-2 drop-shadow-lg">Ingegnerizza</div>
@@ -308,10 +307,10 @@
 
         </section>
 
-        <!-- RESTO DEL SITO -->
-        <div id="rest-of-page" class="opacity-0 relative z-30 bg-asphalt">
+        <!-- RESTO DEL SITO: VISIBILE DI DEFAULT -->
+        <div id="rest-of-page" class="relative z-30 bg-asphalt">
             
-            <!-- FEATURE BANNER: BARBELL -->
+            <!-- FEATURE BANNER -->
             <a href="#calculator" class="block w-full bg-[#050505] border-y border-offwhite/5 py-5 md:py-8 group cursor-pointer text-decoration-none transition-all hover:bg-[#0a0a0a] relative z-10">
                 <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
                     <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
@@ -334,7 +333,7 @@
             <!-- SYSTEM SECTION -->
             <section id="system" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-16 md:mb-24 md:w-2/3">
+                    <div class="mb-16 md:mb-24 md:w-2/3 reveal-up">
                         <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-6 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-offwhite to-offwhite/40">
                             La Meccanica<br>dell'Ipertrofia.
                         </h2>
@@ -344,7 +343,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl reveal-up">
                             <div>
                                 <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">01</div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
@@ -353,7 +352,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl reveal-up">
                             <div>
                                 <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">02</div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
@@ -362,7 +361,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                        <div class="glass glow-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl reveal-up">
                             <div>
                                 <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">03</div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
@@ -379,7 +378,7 @@
             <section id="calculator" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10 bg-[#050505]">
                 <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
                     
-                    <div class="lg:w-1/2">
+                    <div class="lg:w-1/2 reveal-up">
                         <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-cobalt animate-pulse"></span> TOOL DATA-DRIVEN
                         </span>
@@ -393,239 +392,8 @@
                         </div>
                     </div>
 
-                    <div class="lg:w-1/2 w-full glass glow-card p-8 md:p-12 rounded-3xl relative shadow-[0_0_50px_rgba(0,82,255,0.08)]">
+                    <div class="lg:w-1/2 w-full glass glow-card p-8 md:p-12 rounded-3xl relative shadow-[0_0_50px_rgba(0,82,255,0.08)] reveal-up">
                         
                         <div class="mb-6">
                             <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Esercizio (Opzionale)</label>
-                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 md:p-5 rounded-xl text-lg md:text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 md:gap-6 mb-8">
-                            <div>
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Peso (kg)</label>
-                                <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 md:p-5 rounded-xl text-2xl md:text-3xl font-black text-center text-cobalt placeholder-cobalt/30">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Ripetizioni</label>
-                                <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-4 md:p-5 rounded-xl text-2xl md:text-3xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
-                            </div>
-                        </div>
-                        
-                        <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-xs md:text-sm uppercase tracking-widest p-5 rounded-xl mb-8">
-                            Elabora Proiezione
-                        </button>
-                        
-                        <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
-                            <div id="calc-title" class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/40 mb-3">Stima del Sistema</div>
-                            <div id="calc-result" class="text-6xl md:text-7xl font-black tracking-tighter text-offwhite drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                                -- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
-                            </div>
-                            <div id="calc-warning" class="text-xs text-[#ff4d4d] mt-3 hidden bg-[#ff4d4d]/10 py-2 px-4 rounded-full inline-block mx-auto">
-                                Inserisci valori validi.
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- TEAM SECTION -->
-            <section id="team" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10">
-                <div class="max-w-7xl mx-auto">
-                    <div class="mb-16 md:mb-24 text-center">
-                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">IL MOTORE DEL SISTEMA</span>
-                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter">I Fondatori</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-                        <!-- Leonardo -->
-                        <div class="glass glow-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500">
-                            <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
-                                <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
-                            </div>
-                            
-                            <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Leonardo</h3>
-                            <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Biomechanical Analysis & Strategy</p>
-                            
-                            <div class="flex flex-wrap gap-2 mb-8">
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Ingegneria Biomedica (2° Anno)</span>
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">3+ Anni Bodybuilding</span>
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">10+ Anni Background Sportivo (Calcio)</span>
-                            </div>
-                            
-                            <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8">
-                                Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Il suo focus è decostruire ogni alzata e traiettoria attraverso i principi dell'ingegneria e della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico riducendo lo stress articolare inutile.
-                            </p>
-                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
-                                "La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."
-                            </blockquote>
-                        </div>
-
-                        <!-- Elia -->
-                        <div class="glass glow-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500">
-                            <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
-                                <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
-                            </div>
-                            
-                            <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Elia</h3>
-                            <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Kinesiology & Performance Coach</p>
-                            
-                            <div class="flex flex-wrap gap-2 mb-8">
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Scienze Motorie (2° Anno)</span>
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Istruttore PT 1° Livello</span>
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">3+ Anni Bodybuilding & Powerbuilding</span>
-                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">10+ Anni Background Sportivo (Basket)</span>
-                            </div>
-                            
-                            <p class="text-offwhite/70 text-sm md:text-base leading-relaxed flex-grow mb-8">
-                                Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico pratico maturato tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia, strutturando percorsi sostenibili e orientati alla performance nel lungo periodo.
-                            </p>
-                            <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">
-                                "La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PRICING SECTION -->
-            <section id="pricing" class="w-full py-20 md:py-32 px-4 md:px-6 border-b border-offwhite/5 relative z-10 bg-[#050505]">
-                <div class="max-w-7xl mx-auto">
-                    
-                    <div class="mb-16 md:mb-24 text-center">
-                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">IL TUO UPGRADE</span>
-                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter">Scegli l'Evoluzione</h2>
-                    </div>
-
-                    <!-- GRIGLIA PREZZI (ALLINEATI) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl mx-auto mb-16 md:mb-24">
-                        
-                        <!-- Programma Personalizzato -->
-                        <div class="glass glow-card p-8 md:p-12 text-left rounded-3xl border-offwhite/10 flex flex-col h-full relative overflow-hidden transition-all duration-500">
-                            <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Programma Personalizzato</h3>
-                            <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">Ciclo 8 Settimane</p>
-                            
-                            <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione science-based su misura sulle proprie esigenze</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check iniziale e alla fine delle 8 settimane</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso alla nostra community Telegram</span></li>
-                            </ul>
-                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto">
-                                SBLOCCA I PREZZI
-                            </a>
-                        </div>
-
-                        <!-- Coaching 1:1 -->
-                        <div class="glass glow-card p-8 md:p-12 text-left rounded-3xl border-cobalt/50 border shadow-[0_0_50px_rgba(0,82,255,0.15)] flex flex-col h-full relative overflow-hidden transition-all duration-500">
-                            <div class="absolute top-0 right-0 bg-cobalt text-[9px] md:text-[10px] font-black px-5 md:px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-cobalt/50">Premium</div>
-                            
-                            <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Coaching 1:1 (Beta)</h3>
-                            <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">Ciclo 8 Settimane</p>
-                            
-                            <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione 1:1 science-based su misura</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug text-white font-semibold">Dashboard automatizzata (Volume, Carichi, PR)</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Assistenza garantita entro 24/48h</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check iniziale e alla fine delle 8 settimane</span></li>
-                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso alla nostra community Telegram</span></li>
-                            </ul>
-                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)] mt-auto">
-                                SBLOCCA I PREZZI
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <!-- FORM SECTION -->
-                    <div id="assessment" class="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden max-w-4xl mx-auto border border-offwhite/10 shadow-2xl">
-                        <div class="mb-12 text-center relative z-10">
-                            <h2 class="text-3xl md:text-5xl font-black tracking-tighter mb-4">Candidati Ora</h2>
-                        </div>
-
-                        <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-8 relative z-10">
-                            <input type="hidden" name="_next" value="grazie.html">
-
-                            <div class="p-6 md:p-8 bg-asphalt/50 border border-offwhite/5 rounded-2xl transition-colors hover:border-cobalt/30">
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-black text-cobalt mb-5">01. MODULO OPERATIVO</label>
-                                <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
-                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
-                                        <input type="radio" name="percorso" value="Programma Personalizzato" required class="custom-radio"> 
-                                        <span class="group-hover:text-cobalt transition-colors">Programma Personalizzato</span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
-                                        <input type="radio" name="percorso" value="Coaching 1:1" required class="custom-radio"> 
-                                        <span class="group-hover:text-cobalt transition-colors">Coaching 1:1</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="p-6 md:p-8 bg-asphalt/50 border border-offwhite/5 rounded-2xl transition-colors hover:border-cobalt/30">
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-black text-cobalt mb-5">02. INTEGRAZIONE NUTRIZIONALE (CONSIGLI ALIMENTARI)</label>
-                                <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
-                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
-                                        <input type="radio" name="nutrition" value="si" required class="custom-radio"> 
-                                        <span class="group-hover:text-cobalt transition-colors">Sì, richiesta</span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
-                                        <input type="radio" name="nutrition" value="no" required class="custom-radio"> 
-                                        <span class="group-hover:text-cobalt transition-colors">No, solo training</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 pt-4">
-                                <div>
-                                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">NOME E COGNOME</label>
-                                    <input type="text" name="name" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base bg-[#0a0a0a]">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">INDIRIZZO EMAIL</label>
-                                    <input type="email" name="email" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base bg-[#0a0a0a]">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">NUMERO DI TELEFONO</label>
-                                <input type="tel" name="phone" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base bg-[#0a0a0a]">
-                            </div>
-
-                            <div>
-                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">IL TUO OBIETTIVO PRIMARIO</label>
-                                <textarea name="obiettivo" rows="3" required placeholder="es. mettere massa muscolare, ricomposizione corporea ecc.." class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base resize-none bg-[#0a0a0a] placeholder-offwhite/20"></textarea>
-                            </div>
-                            
-                            <div class="pt-10 pb-6 text-center">
-                                <h3 class="text-3xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 leading-tight">
-                                    Invia la candidatura e scopri i pacchetti
-                                </h3>
-                            </div>
-
-                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-black text-sm md:text-base uppercase tracking-widest p-5 md:p-6 rounded-xl shadow-[0_15px_40px_-10px_rgba(0,82,255,0.6)]">
-                                Invia Candidatura
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CONTACTS SECTION -->
-            <section id="contacts" class="w-full py-20 md:py-32 px-6 relative z-10 border-t border-offwhite/5 bg-[#0d0d0d]">
-                <div class="max-w-7xl mx-auto text-center">
-                    <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">NETWORK</span>
-                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-16">Entra nel Sistema</h2>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-                        <a href="mailto:lever.lab.coaching@gmail.com" class="glass glow-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none sm:col-span-2 md:col-span-1">
-                            <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <!-- QUI LA MODIFICA IN EMAIL UFFICIALE -->
-                            <h3 class="font-bold mb-2 text-lg md:text-xl">Email Ufficiale</h3>
-                            <p class="text-offwhite/50 text-xs md:text-sm break-all font-medium">lever.lab.coaching@gmail.com</p>
-                        </a>
-                        
-                        <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass glow-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
-                            <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.
+                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 md:p-5 rounded-xl text-lg md:text-xl font-bold text-center text-off
