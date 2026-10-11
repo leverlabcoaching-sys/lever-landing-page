@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS (in head per evitare flash non stilizzati) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -38,7 +38,6 @@
             background-color: #0d0d0d;
             color: #EDEDED;
             font-family: 'Inter', sans-serif;
-            /* Rimosso overflow-x: hidden da qui per prevenire bug di ScrollTrigger su mobile */
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
@@ -203,6 +202,7 @@
                         <a href="#assessment" class="text-[10px] font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-0.5">
                             Candidati
                         </a>
+                        <!-- Logo Mobile ripristinato a logo.png come in origine -->
                         <img src="logo.png" alt="Logo Lever" class="h-6 w-auto object-contain">
                     </div>
                 </div>
@@ -219,6 +219,7 @@
                     <a href="#assessment" class="text-xs font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-1">
                         Candidati
                     </a>
+                    <!-- Logo Desktop ripristinato a logo.png come in origine -->
                     <img src="logo.png" alt="Logo Lever" class="h-8 w-auto object-contain">
                 </div>
             </div>
@@ -383,7 +384,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                             <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
                                 <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                    <img src="leonardo.jpg" alt="Leonardo" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
+                                    <!-- Ripristinato LEONARDO.JPG maiuscolo -->
+                                    <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
                                     <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
                                 </div>
                                 
@@ -406,7 +408,8 @@
 
                             <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500 h-full">
                                 <div class="relative overflow-hidden rounded-2xl mb-8 group">
-                                    <img src="elia.jpg" alt="Elia" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
+                                    <!-- Ripristinato ELIA.jpg maiuscolo/minuscolo originale -->
+                                    <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
                                     <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
                                 </div>
                                 
