@@ -1,238 +1,848 @@
 <!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LEVER | Coaching online science-based per forza e ipertrofia</title>
-<meta name="description" content="LEVER: programmazione e coaching online science-based per forza e ipertrofia. Biomeccanica, gestione del carico e data tracking. Candidati e scopri i percorsi.">
-<meta name="theme-color" content="#0d0d0d">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LEVER | Ingegnerizza i risultati">
-<meta property="og:description" content="Coaching online science-based per forza e ipertrofia.">
-<link rel="icon" href="logo.png">
-<script>document.documentElement.classList.add('js')</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script>
-tailwind.config={theme:{extend:{colors:{asphalt:'#0d0d0d',offwhite:'#EDEDED',cobalt:'#0052FF'},fontFamily:{sans:['Inter','sans-serif']},letterSpacing:{tighter:'-.04em',widest:'.2em'}}}}
-</script>
-<style type="text/tailwindcss">
-@layer components{
- .glass{@apply rounded-3xl border border-offwhite/10 bg-asphalt/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,.3)]}
- .card{@apply glass p-8 md:p-10 flex flex-col hover:border-cobalt/40 hover:-translate-y-1}
- .eyebrow{@apply block text-cobalt font-bold text-xs uppercase tracking-widest mb-4}
- .h2{@apply text-4xl md:text-6xl font-black tracking-tighter}
- .sec{@apply w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10 scroll-mt-16}
- .chip{@apply bg-cobalt/10 text-cobalt text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20}
- .btn{@apply block w-full bg-cobalt text-offwhite font-bold text-xs uppercase tracking-widest p-5 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,.8)]}
- .lbl{@apply block text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3}
- .field{@apply w-full p-4 md:p-5 rounded-xl text-base bg-[#0a0a0a] border border-offwhite/10 text-offwhite placeholder-offwhite/30 transition focus:outline-none focus:border-cobalt focus:shadow-[0_0_20px_rgba(0,82,255,.15)]}
- .opt{@apply flex items-center gap-3 cursor-pointer text-sm font-semibold hover:text-cobalt transition-colors}
- .grp{@apply p-6 md:p-8 bg-asphalt/50 border border-offwhite/5 rounded-2xl hover:border-cobalt/30 transition-colors}
- .li{@apply flex items-start gap-4 leading-snug}
- .li::before{content:'→';@apply text-cobalt font-black}
- .contact{@apply glass p-8 md:p-10 flex flex-col items-center hover:border-cobalt/40 hover:-translate-y-1}
- .ico{@apply w-16 h-16 mb-6 bg-cobalt/10 rounded-2xl flex items-center justify-center text-cobalt group-hover:bg-cobalt group-hover:text-white group-hover:scale-110 transition duration-300}
-}
-body{background:#0d0d0d;color:#EDEDED;font-family:Inter,sans-serif;margin:0;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-:focus-visible{outline:2px solid #0052FF;outline-offset:3px}
-.btn{transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
-@media(hover:hover){.btn:hover{transform:translateY(-3px);box-shadow:0 15px 30px -5px rgba(0,82,255,.5)}}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.6;pointer-events:none}
-.liquid-bg{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 50%,#111,#050505)}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:screen;animation:float 20s infinite alternate ease-in-out;will-change:transform}
-.blob-1{width:50vw;height:50vw;background:rgba(0,82,255,.3);top:-10%;left:-10%}
-.blob-2{width:40vw;height:40vw;background:rgba(80,0,255,.2);bottom:-10%;right:-10%;animation-delay:-10s}
-.paused .blob{animation-play-state:paused}
-@keyframes float{0%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,10%) scale(1.1)}100%{transform:translate(-5%,5%) scale(.9)}}
-.text-outline{color:transparent;-webkit-text-stroke:1.5px rgba(237,237,237,.2)}
-canvas{display:block;width:100%;height:100%}
-.letter{display:inline-block;will-change:transform,opacity}
-input[type=number]{-moz-appearance:textfield}
-input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.custom-radio{appearance:none;-webkit-appearance:none;width:1.25rem;height:1.25rem;border:2px solid rgba(237,237,237,.4);border-radius:50%;margin:0;flex-shrink:0;cursor:pointer;display:grid;place-content:center;transition:border-color .2s}
-.custom-radio::after{content:'';width:.6rem;height:.6rem;border-radius:50%;background:#0052FF;box-shadow:0 0 8px rgba(0,82,255,.6);transform:scale(0);transition:transform .15s}
-.custom-radio:checked{border-color:#0052FF}
-.custom-radio:checked::after{transform:scale(1)}
-.js .reveal{opacity:0;translate:0 24px;transition:opacity .7s ease,translate .7s ease,transform .5s ease,border-color .5s ease}
-.js .reveal.in{opacity:1;translate:none}
-#calc-result{transition:opacity .3s,transform .3s}
-@media(prefers-reduced-motion:reduce){.blob{animation:none}.js .reveal{opacity:1;translate:none;transition:none}html{scroll-behavior:auto}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LEVER | Science-Based Online Coaching</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        asphalt: '#0d0d0d', /* Reso leggermente più profondo per far risaltare i contrasti */
+                        offwhite: '#EDEDED',
+                        cobalt: '#0052FF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        tighter: '-.04em',
+                        widest: '.2em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #EDEDED;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- TREND 2026: CINEMATIC NOISE OVERLAY --- */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .glass {
+            background: rgba(13, 13, 13, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(237, 237, 237, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navigazione Swipeable Mobile (Nasconde barra scorrimento) */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- EFFETTO APPLE LIQUID GLASS --- */
+        .liquid-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            background: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.5;
+            animation: liquidFloat 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            mix-blend-mode: screen;
+        }
+        
+        .blob-1 {
+            width: 50vw; height: 50vw;
+            background: rgba(0, 82, 255, 0.3);
+            top: -10%; left: -10%;
+        }
+        
+        .blob-2 {
+            width: 40vw; height: 40vw;
+            background: rgba(80, 0, 255, 0.2);
+            bottom: -10%; right: -10%;
+            animation-delay: -10s;
+        }
+
+        .glass-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: rgba(13, 13, 13, 0.1);
+            backdrop-filter: blur(60px);
+            -webkit-backdrop-filter: blur(60px);
+        }
+
+        @keyframes liquidFloat {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(5%, 10%) scale(1.1) rotate(10deg); }
+            100% { transform: translate(-5%, 5%) scale(0.9) rotate(-5deg); }
+        }
+
+        /* --- TESTO WATERMARK SCENA 2 --- */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(237, 237, 237, 0.15);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+
+        /* --- BOTTONI CON SHINE EFFECT --- */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg);
+            animation: shine 6s infinite;
+        }
+        @keyframes shine { 
+            0% { left: -150%; } 
+            20% { left: 200%; } 
+            100% { left: 200%; } 
+        }
+
+        @media (hover: hover) {
+            .btn-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 30px -5px rgba(0, 82, 255, 0.5);
+            }
+            /* Hover Glow per le Card */
+            .glass-card:hover {
+                border-color: rgba(0, 82, 255, 0.4);
+                box-shadow: 0 0 40px -10px rgba(0, 82, 255, 0.15);
+                transform: translateY(-2px);
+            }
+        }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(237, 237, 237, 0.1);
+            color: #EDEDED;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #0052FF;
+            background: rgba(0, 82, 255, 0.02);
+            box-shadow: 0 0 20px rgba(0, 82, 255, 0.15);
+        }
+
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        .letter { display: inline-block; will-change: transform, opacity; }
+    </style>
 </head>
 <body class="bg-asphalt text-offwhite min-h-screen flex flex-col">
-<svg width="0" height="0" class="absolute" aria-hidden="true"><symbol id="ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></symbol></svg>
-<a href="#system" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt focus:text-white focus:px-4 focus:py-2 focus:rounded">Vai al contenuto</a>
-<div id="scroll-progress" class="fixed top-0 left-0 right-0 h-0.5 bg-cobalt z-[60] origin-left scale-x-0" aria-hidden="true"></div>
 
-<nav id="main-nav" aria-label="Principale" class="fixed top-0 inset-x-0 z-50 px-4 pt-4 md:px-6 md:pt-6">
- <div class="max-w-7xl mx-auto glass !rounded-2xl md:!rounded-full p-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3">
-  <div class="flex justify-between items-center w-full md:w-auto">
-   <a href="#hero-section" class="text-2xl md:text-3xl font-black tracking-widest text-cobalt hover:drop-shadow-[0_0_15px_#0052FF] transition">LEVER</a>
-   <a href="#assessment" class="md:hidden text-xs font-bold uppercase tracking-widest border-b border-offwhite/30 pb-0.5">Candidati</a>
-  </div>
-  <div class="flex flex-wrap justify-center gap-x-5 gap-y-2 md:gap-8 font-medium text-xs md:text-sm text-offwhite/80">
-   <a href="#system" class="hover:text-offwhite">Metodologia</a>
-   <a href="#calculator" class="text-cobalt font-semibold hover:text-offwhite">Calcolatore 1RM</a>
-   <a href="#team" class="hover:text-offwhite">Il Team</a>
-   <a href="#pricing" class="hover:text-offwhite">Percorsi</a>
-   <a href="#contacts" class="hover:text-offwhite">Contatti</a>
-  </div>
-  <div class="hidden md:flex items-center gap-5">
-   <a href="#assessment" class="text-xs font-bold uppercase tracking-widest border-b border-offwhite/30 hover:border-offwhite pb-1 transition-colors">Candidati</a>
-   <img src="logo.png" alt="" class="h-8 w-auto" onerror="this.remove()">
-  </div>
- </div>
-</nav>
+    <!-- TEXTURE CINEMATOGRAFICA (Non rimuovere, cambia la percezione della qualità) -->
+    <div class="noise-overlay"></div>
 
-<main class="flex-grow">
-<section id="hero-section" class="relative w-full h-screen overflow-hidden flex items-center justify-center" style="height:100svh">
- <div class="liquid-bg pointer-events-none" aria-hidden="true"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
- <div id="canvas-container" class="absolute inset-0 z-10 pointer-events-none" aria-hidden="true"></div>
- <div id="scene2-text" aria-hidden="true" class="absolute inset-0 z-[15] opacity-0 pointer-events-none flex flex-col justify-between py-[18svh] md:flex-row md:py-0 md:justify-center overflow-hidden">
-  <div class="md:w-1/2 md:h-full flex items-center justify-center md:justify-end md:pr-[10vw]"><span class="text-[13vw] md:text-[5vw] font-black uppercase tracking-widest text-outline select-none">LEVER</span></div>
-  <div class="md:w-1/2 md:h-full flex items-center justify-center md:justify-start md:pl-[10vw]"><span class="text-[13vw] md:text-[5vw] font-black uppercase tracking-widest text-outline select-none">COACHING</span></div>
- </div>
- <h1 id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 px-4 pointer-events-none">
-  <span class="sr-only">LEVER. Ingegnerizza i risultati.</span>
-  <span id="title-lever" class="text-cobalt font-black text-[18vw] md:text-[11rem] uppercase tracking-tighter leading-none mb-3 drop-shadow-[0_0_40px_rgba(0,82,255,.5)]">LEVER</span>
-  <span id="title-line1" class="text-offwhite font-black text-3xl sm:text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-2">Ingegnerizza</span>
-  <span id="title-line2" class="text-offwhite/40 font-black text-3xl sm:text-5xl md:text-7xl uppercase tracking-tighter leading-none">I Risultati.</span>
- </h1>
- <div id="scroll-cue" class="absolute bottom-6 inset-x-0 z-20 text-center text-xs uppercase tracking-widest text-offwhite/60 pointer-events-none" aria-hidden="true">Scorri ↓</div>
-</section>
+    <!-- NAV OTTIMIZZATA MOBILE & DESKTOP -->
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:px-6 md:pt-6 pointer-events-none opacity-0 -translate-y-full">
+        <div class="max-w-7xl mx-auto glass rounded-2xl md:rounded-full pointer-events-auto p-4 md:px-8 md:py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+            
+            <!-- Top bar su mobile / In-line su desktop -->
+            <div class="flex justify-between items-center w-full md:w-auto">
+                <a href="#" class="flex items-center group cursor-pointer text-decoration-none">
+                    <span class="text-2xl md:text-3xl font-black tracking-widest uppercase select-none text-cobalt transition-all duration-300 group-hover:drop-shadow-[0_0_15px_#0052FF]">
+                        LEVER
+                    </span>
+                </a>
+                <!-- Tasto Action visibile su Mobile accanto al logo -->
+                <div class="flex md:hidden items-center gap-3">
+                    <a href="#assessment" class="text-[10px] font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-0.5">
+                        Candidati
+                    </a>
+                    <img src="logo.png" alt="Logo Lever" class="h-6 w-auto object-contain">
+                </div>
+            </div>
+            
+            <!-- Link scorrevoli (Swipeable) su Mobile / In-line su Desktop -->
+            <div class="flex overflow-x-auto no-scrollbar w-full md:w-auto gap-6 md:gap-8 font-medium text-xs md:text-sm tracking-wide text-offwhite/70 snap-x">
+                <a href="#system" class="whitespace-nowrap snap-start hover:text-offwhite hover:scale-105 transition-all duration-200">Metodologia</a>
+                <a href="#calculator" class="whitespace-nowrap snap-start text-cobalt font-semibold hover:text-offwhite hover:scale-105 transition-all duration-200">1RM Calc</a>
+                <a href="#team" class="whitespace-nowrap snap-start hover:text-offwhite hover:scale-105 transition-all duration-200">Il Team</a>
+                <a href="#pricing" class="whitespace-nowrap snap-start hover:text-offwhite hover:scale-105 transition-all duration-200">Percorsi</a>
+                <a href="#contacts" class="whitespace-nowrap snap-start hover:text-offwhite hover:scale-105 transition-all duration-200">Contatti</a>
+            </div>
+            
+            <!-- Elementi di destra solo su Desktop -->
+            <div class="hidden md:flex items-center gap-5">
+                <a href="#assessment" class="text-xs font-bold uppercase tracking-widest text-offwhite border-b border-offwhite/20 hover:border-offwhite transition-colors pb-1">
+                    Candidati
+                </a>
+                <img src="logo.png" alt="Logo Lever" class="h-8 w-auto object-contain">
+            </div>
+        </div>
+    </nav>
 
-<div id="rest-of-page" class="relative z-30 bg-asphalt">
+    <main class="flex-grow">
+        
+        <!-- HERO SECTION (SCENA 1 & 2) -->
+        <section id="hero-section" class="relative w-full h-[100dvh] overflow-hidden flex items-center justify-center">
+            
+            <!-- LIQUID GLASS BACKGROUND -->
+            <div class="liquid-bg pointer-events-none">
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+            </div>
+            <div class="glass-overlay pointer-events-none"></div>
 
- <a href="#calculator" class="flex flex-col md:flex-row items-center justify-between gap-4 w-full bg-[#050505] border-y border-offwhite/5 py-6 md:py-8 px-6 group hover:bg-[#0a0a0a] transition-colors">
-  <span class="max-w-7xl flex flex-col md:flex-row items-center gap-4 md:gap-6 text-center md:text-left">
-   <svg viewBox="0 0 100 40" class="w-20 text-cobalt group-hover:scale-110 transition duration-500" fill="currentColor" aria-hidden="true"><path d="M10 15h5v-5h10v20H15v-5h-5zM75 10h10v5h5v10h-5v5H75zM25 18h50v4H25z"/></svg>
-   <span><span class="block text-cobalt font-bold text-xs uppercase tracking-widest mb-1">Strumento gratuito</span><span class="font-bold text-lg md:text-xl group-hover:text-cobalt transition-colors">Calcola il tuo massimale (1RM)</span></span>
-  </span>
-  <span class="text-offwhite/60 text-sm font-medium group-hover:text-offwhite transition-colors">Apri il calcolatore →</span>
- </a>
+            <!-- TESTO BACKGROUND SCENA 2 (In primo piano Z:15) -->
+            <div id="scene2-text" class="absolute inset-0 flex items-center justify-center z-[15] opacity-0 pointer-events-none w-full overflow-hidden">
+                <div class="w-1/2 h-full flex items-center justify-end pr-[6vw] md:pr-[10vw]">
+                    <h2 class="text-[12vw] md:text-[7vw] lg:text-[5vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_30px_rgba(0,82,255,0.2)] whitespace-nowrap">
+                        LEVER
+                    </h2>
+                </div>
+                <div class="w-1/2 h-full flex items-center justify-start pl-[6vw] md:pl-[10vw]">
+                    <h2 class="text-[12vw] md:text-[7vw] lg:text-[5vw] font-black uppercase tracking-widest text-outline select-none drop-shadow-[0_0_30px_rgba(0,82,255,0.2)] whitespace-nowrap">
+                        COACHING
+                    </h2>
+                </div>
+            </div>
 
- <section id="system" class="sec">
-  <div class="max-w-7xl mx-auto">
-   <div class="mb-16 md:w-2/3 reveal">
-    <h2 class="h2 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-offwhite to-offwhite/40 pb-1">La meccanica<br>dell'ipertrofia.</h2>
-    <p class="text-offwhite/70 leading-relaxed text-base md:text-xl max-w-2xl">Trattiamo il corpo umano come un problema ingegneristico: analizziamo i vettori di forza e costruiamo sistemi scalabili per la tua performance.</p>
-   </div>
-   <ol class="grid md:grid-cols-3 gap-6 md:gap-8 list-none">
-    <li class="card min-h-[280px] reveal"><div class="text-cobalt font-black text-5xl mb-6 opacity-80">01</div><h3 class="text-xl md:text-2xl font-bold mb-4">Analisi cinematica</h3><p class="text-offwhite/70 leading-loose">Decostruiamo il tuo schema motorio e individuiamo le dispersioni di forza per ottimizzare ogni alzata.</p></li>
-    <li class="card min-h-[280px] reveal"><div class="text-cobalt font-black text-5xl mb-6 opacity-80">02</div><h3 class="text-xl md:text-2xl font-bold mb-4">Gestione del carico</h3><p class="text-offwhite/70 leading-loose">Periodizzazione a blocchi e autoregolazione: eliminiamo il volume spazzatura e concentriamo lo stress meccanico.</p></li>
-    <li class="card min-h-[280px] reveal"><div class="text-cobalt font-black text-5xl mb-6 opacity-80">03</div><h3 class="text-xl md:text-2xl font-bold mb-4">Data tracking</h3><p class="text-offwhite/70 leading-loose">Monitoraggio rigoroso dei parametri e aggiornamento del piano in base alla risposta del tuo sistema nervoso centrale.</p></li>
-   </ol>
-  </div>
- </section>
+            <!-- CONTENITORE 3D -->
+            <div id="canvas-container" class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"></div>
 
- <section id="calculator" class="sec bg-[#050505]">
-  <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
-   <div class="lg:w-1/2 reveal">
-    <span class="eyebrow">Strumento data-driven</span>
-    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-6">Proietta il tuo massimale.</h2>
-    <p class="text-offwhite/70 leading-relaxed mb-6">Conoscere il tuo 1RM (One-Rep Max) serve a calibrare percentuali di carico e intensità all'interno del mesociclo.</p>
-    <div class="p-5 border-l-4 border-cobalt bg-cobalt/[0.03] rounded-r-lg break-words">
-     <p class="text-offwhite/60 text-xs mb-2 uppercase tracking-widest font-bold">Formula di Brzycki</p>
-     <code class="text-cobalt font-bold">1RM = Peso × [36 / (37 − Ripetizioni)]</code>
-    </div>
-   </div>
-   <form id="calc" class="lg:w-1/2 w-full glass p-8 md:p-12 shadow-[0_0_50px_rgba(0,82,255,.08)] reveal" novalidate>
-    <div class="mb-6"><label for="calc-exercise" class="lbl text-center">Esercizio (opzionale)</label>
-     <input id="calc-exercise" type="text" placeholder="es. Squat" autocomplete="off" class="field text-center text-xl font-bold"></div>
-    <div class="grid grid-cols-2 gap-4 md:gap-6 mb-8">
-     <div><label for="calc-weight" class="lbl text-center">Peso (kg)</label><input id="calc-weight" type="number" inputmode="decimal" step="any" min="0" placeholder="80" class="field text-center text-3xl font-black !text-cobalt"></div>
-     <div><label for="calc-reps" class="lbl text-center">Ripetizioni</label><input id="calc-reps" type="number" inputmode="numeric" min="1" max="20" placeholder="5" class="field text-center text-3xl font-black !text-cobalt"></div>
-    </div>
-    <button type="submit" class="btn mb-8">Calcola il massimale</button>
-    <div class="border-t border-offwhite/10 pt-8 text-center min-h-[140px] flex flex-col justify-center" aria-live="polite">
-     <div id="calc-title" class="text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3">Stima del sistema</div>
-     <div id="calc-result" class="text-6xl md:text-7xl font-black tracking-tighter">--<span class="text-2xl text-offwhite/40 font-normal tracking-normal"> kg</span></div>
-     <p id="calc-warning" class="text-sm text-[#ff7b7b] mt-3 hidden"></p>
-    </div>
-   </form>
-  </div>
- </section>
+            <!-- TESTO ESPLOSIVO SCENA 1 -->
+            <div id="hero-text-container" class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 w-full px-4 pointer-events-none">
+                <div id="title-lever" class="text-cobalt font-black text-[18vw] md:text-[11rem] uppercase tracking-tighter leading-none mb-2 md:mb-4 drop-shadow-[0_0_40px_rgba(0,82,255,0.5)] mix-blend-screen">LEVER</div>
+                <div id="title-line1" class="text-offwhite font-black text-3xl sm:text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-2 drop-shadow-lg">Ingegnerizza</div>
+                <div id="title-line2" class="text-offwhite/30 font-black text-3xl sm:text-5xl md:text-7xl uppercase tracking-tighter leading-none">I Risultati.</div>
+            </div>
 
- <section id="team" class="sec">
-  <div class="max-w-7xl mx-auto">
-   <div class="mb-16 text-center reveal"><span class="eyebrow">Il motore del sistema</span><h2 class="h2">I fondatori</h2></div>
-   <div class="grid md:grid-cols-2 gap-10 md:gap-16">
-    <article class="card reveal">
-     <div class="relative overflow-hidden rounded-2xl mb-8 aspect-square bg-[#141414] grid place-items-center group">
-      <span class="text-[10rem] font-black text-outline" aria-hidden="true">L</span>
-      <img src="LEONARDO.JPG" alt="Leonardo, fondatore di LEVER" width="800" height="800" loading="lazy" decoding="async" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-     </div>
-     <h3 class="text-3xl md:text-4xl font-black mb-2">Leonardo</h3>
-     <p class="text-cobalt font-bold text-sm uppercase tracking-widest mb-6">Biomechanical Analysis &amp; Strategy</p>
-     <div class="flex flex-wrap gap-2 mb-8"><span class="chip">Ingegneria Biomedica (2° anno)</span><span class="chip">3+ anni bodybuilding</span><span class="chip">10+ anni di sport (calcio)</span></div>
-     <p class="text-offwhite/75 leading-relaxed flex-grow mb-8">Unisce l'analisi razionale della fisica meccanica all'ottimizzazione del corpo umano. Decostruisce ogni alzata e traiettoria con i principi della biomeccanica applicata, eliminando l'improvvisazione dalla programmazione per massimizzare lo stimolo ipertrofico e ridurre lo stress articolare inutile.</p>
-     <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">"La biomeccanica non ammette dogmi: contano i vettori di forza, l'anatomia individuale e i dati oggettivi."</blockquote>
-    </article>
-    <article class="card reveal">
-     <div class="relative overflow-hidden rounded-2xl mb-8 aspect-square bg-[#141414] grid place-items-center group">
-      <span class="text-[10rem] font-black text-outline" aria-hidden="true">E</span>
-      <img src="ELIA.jpg" alt="Elia, fondatore di LEVER" width="800" height="800" loading="lazy" decoding="async" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-     </div>
-     <h3 class="text-3xl md:text-4xl font-black mb-2">Elia</h3>
-     <p class="text-cobalt font-bold text-sm uppercase tracking-widest mb-6">Kinesiology &amp; Performance Coach</p>
-     <div class="flex flex-wrap gap-2 mb-8"><span class="chip">Scienze Motorie (2° anno)</span><span class="chip">Istruttore PT 1° livello</span><span class="chip">3+ anni bodybuilding &amp; powerbuilding</span><span class="chip">10+ anni di sport (basket)</span></div>
-     <p class="text-offwhite/75 leading-relaxed flex-grow mb-8">Futuro dottore chinesiologo con certificazione nazionale da personal trainer. Coniuga fisiologia dell'esercizio, mobilità e gestione del carico maturata tra sala pesi e campo. Guida gli atleti verso la massima espressione di forza e ipertrofia con percorsi sostenibili e orientati alla performance nel lungo periodo.</p>
-     <blockquote class="border-l-2 border-cobalt pl-4 text-offwhite/90 italic text-sm">"La tecnica corretta e la progressione sistematica sono la sola vera chiave per costruire longevità e prestazione."</blockquote>
-    </article>
-   </div>
-  </div>
- </section>
+        </section>
 
- <section id="pricing" class="sec bg-[#050505] !px-4 md:!px-6">
-  <div class="max-w-7xl mx-auto">
-   <div class="mb-16 text-center reveal"><span class="eyebrow">Il tuo upgrade</span><h2 class="h2">Scegli l'evoluzione</h2></div>
-   <div class="grid md:grid-cols-2 gap-6 md:gap-10 max-w-5xl mx-auto mb-20">
-    <article class="glass !border-cobalt/50 p-8 md:p-12 flex flex-col shadow-[0_0_50px_rgba(0,82,255,.15)] reveal">
-     <h3 class="text-2xl md:text-3xl font-black mb-2">Programma Personalizzato</h3>
-     <p class="text-offwhite/60 text-sm font-bold uppercase tracking-widest mb-8">Ciclo di 8 settimane</p>
-     <ul class="text-offwhite/80 space-y-5 mb-12 flex-grow">
-      <li class="li">Programmazione science-based su misura per le tue esigenze</li>
-      <li class="li">Check iniziale e finale a 8 settimane</li>
-      <li class="li">Accesso alla community Telegram</li>
-     </ul>
-     <a href="#assessment" data-plan="Programma Personalizzato" class="btn">Candidati per sbloccare i prezzi</a>
-    </article>
-    <article class="glass !border-cobalt/50 p-8 md:p-12 flex flex-col shadow-[0_0_50px_rgba(0,82,255,.15)] relative overflow-hidden reveal">
-     <span class="absolute top-0 right-0 bg-cobalt text-[10px] font-black px-6 py-2 rounded-bl-2xl uppercase tracking-widest">Premium</span>
-     <h3 class="text-2xl md:text-3xl font-black mb-2">Coaching 1:1 (Beta)</h3>
-     <p class="text-offwhite/60 text-sm font-bold uppercase tracking-widest mb-8">Ciclo di 8 settimane</p>
-     <ul class="text-offwhite/80 space-y-5 mb-12 flex-grow">
-      <li class="li">Programmazione 1:1 science-based su misura</li>
-      <li class="li font-semibold text-white">Dashboard automatizzata (volume, carichi, PR)</li>
-      <li class="li">Assistenza garantita entro 24/48 ore</li>
-      <li class="li">Check iniziale e finale a 8 settimane</li>
-      <li class="li">Accesso alla community Telegram</li>
-     </ul>
-     <a href="#assessment" data-plan="Coaching 1:1" class="btn">Candidati per sbloccare i prezzi</a>
-    </article>
-   </div>
+        <!-- RESTO DEL SITO -->
+        <div id="rest-of-page" class="opacity-0 relative z-30 bg-asphalt">
+            
+            <!-- FEATURE BANNER: BARBELL -->
+            <a href="#calculator" class="block w-full bg-[#050505] border-y border-offwhite/5 py-5 md:py-8 group cursor-pointer text-decoration-none transition-all hover:bg-[#0a0a0a] relative z-10">
+                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
+                    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                        <svg viewBox="0 0 100 40" class="w-16 md:w-24 h-auto text-cobalt group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_#0052FF] transition-all duration-500" fill="currentColor">
+                            <path d="M10,15 L15,15 L15,10 L25,10 L25,30 L15,30 L15,25 L10,25 Z"/>
+                            <path d="M75,10 L85,10 L85,15 L90,15 L90,25 L85,25 L85,30 L75,30 Z"/>
+                            <path d="M25,18 L75,18 L75,22 L25,22 Z"/>
+                        </svg>
+                        <div class="flex flex-col">
+                            <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1">Tool Integrato A.I.</span>
+                            <span class="text-offwhite font-bold tracking-tight text-lg md:text-xl group-hover:text-cobalt transition-colors">Calcola il tuo Massimale (1RM)</span>
+                        </div>
+                    </div>
+                    <span class="text-offwhite/50 text-xs md:text-sm font-medium tracking-widest uppercase flex items-center gap-3 group-hover:text-offwhite transition-colors">
+                        Accedi al calcolatore <span class="text-cobalt font-black text-xl transform group-hover:translate-x-3 transition-transform">→</span>
+                    </span>
+                </div>
+            </a>
 
-   <div id="assessment" class="glass !rounded-[2rem] p-8 md:p-16 max-w-4xl mx-auto shadow-2xl scroll-mt-28 reveal">
-    <h2 class="text-3xl md:text-5xl font-black tracking-tighter mb-12 text-center">Candidati ora</h2>
-    <form id="apply" action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-8">
-     <input type="hidden" name="_next" value="grazie.html">
-     <input type="hidden" name="_subject" value="Nuova candidatura LEVER">
-     <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
-     <fieldset class="grp"><legend class="lbl !text-cobalt">Percorso</legend>
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
-       <label class="opt"><input type="radio" name="percorso" value="Programma Personalizzato" required class="custom-radio">Programma Personalizzato</label>
-       <label class="opt"><input type="radio" name="percorso" value="Coaching 1:1" required class="custom-radio">Coaching 1:1</label>
-      </div></fieldset>
-     <fieldset class="grp"><legend class="lbl !text-cobalt">Consigli alimentari</legend>
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
-       <label class="opt"><input type="radio" name="nutrition" value="si" required class="custom-radio">Sì, li voglio</label>
-       <label class="opt"><input type="radio" name="nutrition" value="no" required class="custom-radio">No, solo training</label>
-      </div></fieldset>
-     <div class="grid
+            <!-- SYSTEM SECTION -->
+            <section id="system" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-16 md:mb-24 md:w-2/3">
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-6 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-offwhite to-offwhite/40">
+                            La Meccanica<br>dell'Ipertrofia.
+                        </h2>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-base md:text-xl max-w-2xl">
+                            Il nostro sistema tratta il corpo umano come un problema ingegneristico. Analizziamo i vettori di forza e strutturiamo sistemi scalabili per la tua performance.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                        <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                            <div>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">01</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Analisi Cinematica</h3>
+                                <p class="text-offwhite/60 text-sm md:text-base leading-loose">
+                                    Decostruzione del tuo schema motorio. Identifichiamo le dispersioni di forza per ottimizzare ogni singola alzata.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                            <div>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">02</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Gestione del Carico</h3>
+                                <p class="text-offwhite/60 text-sm md:text-base leading-loose">
+                                    Periodizzazione a blocchi e autoregolazione. Eliminiamo il volume spazzatura concentrando lo stress meccanico.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="glass glass-card p-8 md:p-12 flex flex-col justify-between min-h-[300px] transition-all duration-500 rounded-2xl">
+                            <div>
+                                <div class="text-cobalt font-black text-5xl md:text-6xl mb-6 opacity-80">03</div>
+                                <h3 class="text-xl md:text-2xl font-bold mb-4 tracking-tight">Data Tracking</h3>
+                                <p class="text-offwhite/60 text-sm md:text-base leading-loose">
+                                    Monitoraggio rigoroso dei parametri. Aggiornamento in base alla risposta del tuo sistema nervoso centrale.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CALCULATOR SECTION -->
+            <section id="calculator" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10 bg-[#050505]">
+                <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+                    
+                    <div class="lg:w-1/2">
+                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-cobalt animate-pulse"></span> TOOL DATA-DRIVEN
+                        </span>
+                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-6">Proietta il tuo Massimale.</h2>
+                        <p class="text-offwhite/60 font-normal leading-relaxed text-sm md:text-base mb-6">
+                            Conoscere il proprio 1RM (One-Rep Max) è fondamentale per calibrare le percentuali di carico e l'intensità all'interno del mesociclo.
+                        </p>
+                        <div class="p-5 border-l-4 border-cobalt bg-cobalt/[0.03] rounded-r-lg break-words">
+                            <p class="text-offwhite/50 text-xs mb-2 uppercase tracking-widest font-bold">Formula di Brzycki</p>
+                            <code class="text-cobalt font-bold text-sm md:text-base">1RM = Peso × [36 / (37 - Ripetizioni)]</code>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 w-full glass p-8 md:p-12 rounded-3xl relative shadow-[0_0_50px_rgba(0,82,255,0.08)]">
+                        
+                        <div class="mb-6">
+                            <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Esercizio (Opzionale)</label>
+                            <input type="text" id="calc-exercise" placeholder="es. Squat" class="form-input w-full p-4 md:p-5 rounded-xl text-lg md:text-xl font-bold text-center text-offwhite placeholder-offwhite/20">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 md:gap-6 mb-8">
+                            <div>
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Peso (kg)</label>
+                                <input type="number" id="calc-weight" placeholder="80" class="form-input w-full p-4 md:p-5 rounded-xl text-2xl md:text-3xl font-black text-center text-cobalt placeholder-cobalt/30">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/70 mb-3 text-center">Ripetizioni</label>
+                                <input type="number" id="calc-reps" placeholder="5" class="form-input w-full p-4 md:p-5 rounded-xl text-2xl md:text-3xl font-black text-center text-cobalt placeholder-cobalt/30" max="15">
+                            </div>
+                        </div>
+                        
+                        <button id="calc-btn" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-xs md:text-sm uppercase tracking-widest p-5 rounded-xl mb-8">
+                            Elabora Proiezione
+                        </button>
+                        
+                        <div class="border-t border-offwhite/10 pt-8 text-center min-h-[120px] flex flex-col justify-center">
+                            <div id="calc-title" class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/40 mb-3">Stima del Sistema</div>
+                            <div id="calc-result" class="text-6xl md:text-7xl font-black tracking-tighter text-offwhite drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                                -- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>
+                            </div>
+                            <div id="calc-warning" class="text-xs text-[#ff4d4d] mt-3 hidden bg-[#ff4d4d]/10 py-2 px-4 rounded-full inline-block mx-auto">
+                                Inserisci valori validi.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- TEAM SECTION -->
+            <section id="team" class="w-full py-20 md:py-32 px-6 border-b border-offwhite/5 relative z-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-16 md:mb-24 text-center">
+                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">IL MOTORE DEL SISTEMA</span>
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter">I Fondatori</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+                        <!-- Leonardo -->
+                        <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500">
+                            <div class="relative overflow-hidden rounded-2xl mb-8 group">
+                                <img src="LEONARDO.JPG" alt="Leonardo" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
+                                <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
+                            </div>
+                            
+                            <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Leonardo</h3>
+                            <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Strategy & Biomechanics</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Ingegneria Biomedica</span>
+                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">3+ Anni Pumping</span>
+                            </div>
+                            
+                            <p class="text-offwhite/60 text-sm md:text-base leading-relaxed flex-grow mb-8">
+                                Unisce l'analisi razionale della fisica all'ottimizzazione del corpo umano. Decostruisce ogni alzata attraverso i principi dell'ingegneria, eliminando l'improvvisazione per massimizzare lo stimolo riducendo lo stress inutile.
+                            </p>
+                        </div>
+
+                        <!-- Elia -->
+                        <div class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col transition-all duration-500">
+                            <div class="relative overflow-hidden rounded-2xl mb-8 group">
+                                <img src="ELIA.jpg" alt="Elia" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105 bg-[#1a1a1a] text-transparent">
+                                <div class="absolute inset-0 bg-gradient-to-t from-asphalt via-transparent to-transparent opacity-60"></div>
+                            </div>
+                            
+                            <h3 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">Elia</h3>
+                            <p class="text-cobalt font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Performance Coach</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Scienze Motorie</span>
+                                <span class="bg-cobalt/10 text-cobalt text-[10px] md:text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-cobalt/20">Coach Certificato</span>
+                            </div>
+                            
+                            <p class="text-offwhite/60 text-sm md:text-base leading-relaxed flex-grow mb-8">
+                                Futuro chinesiologo. Coniuga fisiologia dell'esercizio e gestione pratica del carico. Guida gli atleti verso la massima espressione di forza, strutturando percorsi sostenibili e orientati alla performance pura.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRICING & FORM SECTION -->
+            <section id="pricing" class="w-full py-20 md:py-32 px-4 md:px-6 border-b border-offwhite/5 relative z-10 bg-[#050505]">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="mb-16 md:mb-24 text-center">
+                        <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">IL TUO UPGRADE</span>
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter">Scegli l'Evoluzione</h2>
+                    </div>
+
+                    <!-- GRIGLIA PREZZI -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl mx-auto mb-16 md:mb-24">
+                        
+                        <!-- Programma Personalizzato -->
+                        <div class="glass glass-card p-8 md:p-12 text-left rounded-3xl border border-offwhite/10 hover:border-cobalt/50 shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col relative overflow-hidden transition-all duration-500">
+                            <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Programma Custom</h3>
+                            <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">Ciclo 8 Settimane</p>
+                            
+                            <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione science-based cucita sulle tue leve</span></li>
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check biomeccanico iniziale e review a fine blocco</span></li>
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Accesso riservato alla community Telegram privata</span></li>
+                            </ul>
+                            <a href="#assessment" class="btn-primary w-full bg-[#111] border border-cobalt/30 text-offwhite hover:bg-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center transition-all duration-300">
+                                Sblocca i Prezzi
+                            </a>
+                        </div>
+
+                        <!-- Coaching 1:1 -->
+                        <div class="glass glass-card p-8 md:p-12 text-left rounded-3xl border-cobalt/50 border shadow-[0_0_50px_rgba(0,82,255,0.15)] flex flex-col relative overflow-hidden transition-all duration-500 transform md:-translate-y-4">
+                            <div class="absolute top-0 right-0 bg-cobalt text-[9px] md:text-[10px] font-black px-5 md:px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-cobalt/50">Elite</div>
+                            
+                            <h3 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">Coaching 1:1 <span class="text-cobalt bg-cobalt/10 px-2 py-1 rounded-md text-sm align-middle">BETA</span></h3>
+                            <p class="text-offwhite/50 text-xs md:text-sm font-bold uppercase tracking-widest mb-8">Ciclo 8 Settimane</p>
+                            
+                            <ul class="text-offwhite/70 text-sm md:text-base space-y-5 mb-12 flex-grow">
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Programmazione 1:1 adattiva a feedback continuo</span></li>
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug text-white font-semibold">Dashboard proprietaria (Volume, Carichi, PR)</span></li>
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Assistenza tecnica e supporto garantito entro 24/48h</span></li>
+                                <li class="flex items-start"><span class="text-cobalt mr-4 font-black mt-0.5">→</span> <span class="leading-snug">Check video costanti e accesso Telegram</span></li>
+                            </ul>
+                            <a href="#assessment" class="btn-primary w-full bg-cobalt text-offwhite font-bold text-[10px] md:text-xs uppercase tracking-widest p-5 md:p-6 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(0,82,255,0.8)]">
+                                Sblocca i Prezzi
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- FORM -->
+                    <div id="assessment" class="glass p-8 md:p-16 rounded-[2rem] relative overflow-hidden max-w-4xl mx-auto border border-offwhite/10 shadow-2xl">
+                        <div class="mb-12 text-center relative z-10">
+                            <h2 class="text-3xl md:text-5xl font-black tracking-tighter mb-4">Candidatura Ufficiale</h2>
+                            <p class="text-offwhite/50 text-sm md:text-base max-w-lg mx-auto">I posti sono limitati per garantire massima qualità. Compila il form con precisione ingegneristica.</p>
+                        </div>
+
+                        <form action="https://formspree.io/f/mbglonkp" method="POST" class="space-y-8 relative z-10">
+                            <input type="hidden" name="_next" value="grazie.html">
+
+                            <div class="p-6 md:p-8 bg-asphalt/50 border border-offwhite/5 rounded-2xl">
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-black text-cobalt mb-5">01. Modulo Operativo</label>
+                                <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
+                                        <input type="radio" name="percorso" value="Programma Custom" required class="accent-cobalt w-5 h-5 cursor-pointer"> 
+                                        <span class="group-hover:text-cobalt transition-colors">Programma Custom</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
+                                        <input type="radio" name="percorso" value="Coaching 1:1" required class="accent-cobalt w-5 h-5 cursor-pointer"> 
+                                        <span class="group-hover:text-cobalt transition-colors">Coaching 1:1</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="p-6 md:p-8 bg-asphalt/50 border border-offwhite/5 rounded-2xl">
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-black text-cobalt mb-5">02. Integrazione Nutrizionale</label>
+                                <div class="flex gap-8">
+                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
+                                        <input type="radio" name="nutrition" value="si" required class="accent-cobalt w-5 h-5 cursor-pointer"> 
+                                        <span class="group-hover:text-cobalt transition-colors">Sì, richiesta</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer text-sm font-semibold group">
+                                        <input type="radio" name="nutrition" value="no" required class="accent-cobalt w-5 h-5 cursor-pointer"> 
+                                        <span class="group-hover:text-cobalt transition-colors">No, solo training</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 pt-4">
+                                <div>
+                                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">Nome e Cognome</label>
+                                    <input type="text" name="name" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">Indirizzo Email</label>
+                                    <input type="email" name="email" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">Numero di Telefono (WhatsApp)</label>
+                                <input type="tel" name="phone" required class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base">
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-offwhite/60 mb-3 pl-2">Il tuo Obiettivo Primario</label>
+                                <textarea name="obiettivo" rows="3" required placeholder="Sii specifico. Cosa vuoi ingegnerizzare nel tuo fisico?" class="form-input w-full p-4 md:p-5 rounded-xl text-sm md:text-base resize-none"></textarea>
+                            </div>
+                            
+                            <div class="pt-10 pb-6 text-center">
+                                <h3 class="text-3xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 leading-tight">
+                                    Invia la candidatura.<br>Scopri i pacchetti.
+                                </h3>
+                            </div>
+
+                            <button type="submit" class="btn-primary w-full bg-cobalt text-offwhite font-black text-sm md:text-base uppercase tracking-widest p-5 md:p-6 rounded-xl shadow-[0_15px_40px_-10px_rgba(0,82,255,0.6)]">
+                                Inizia L'Evoluzione
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACTS SECTION -->
+            <section id="contacts" class="w-full py-20 md:py-32 px-6 relative z-10 border-t border-offwhite/5 bg-[#0d0d0d]">
+                <div class="max-w-7xl mx-auto text-center">
+                    <span class="text-cobalt font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 block">NETWORK</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-16">Entra nel Sistema</h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+                        <a href="mailto:lever.lab.coaching@gmail.com" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none sm:col-span-2 md:col-span-1">
+                            <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg md:text-xl">HQ Ufficiale</h3>
+                            <p class="text-offwhite/50 text-xs md:text-sm break-all font-medium">lever.lab.coaching@gmail.com</p>
+                        </a>
+                        
+                        <a href="https://instagram.com/leo.cucchi" target="_blank" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
+                            <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg md:text-xl">Leonardo Cucchi</h3>
+                            <p class="text-offwhite/50 text-xs md:text-sm font-medium">@leo.cucchi</p>
+                        </a>
+                        
+                        <a href="https://instagram.com/elia_berga_" target="_blank" class="glass glass-card p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center transition-all duration-300 group text-decoration-none">
+                            <div class="w-16 h-16 bg-cobalt/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cobalt group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                <svg class="w-7 h-7 text-cobalt group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            </div>
+                            <h3 class="font-bold mb-2 text-lg md:text-xl">Elia</h3>
+                            <p class="text-offwhite/50 text-xs md:text-sm font-medium">@elia_berga_</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-10 md:py-12 px-6 bg-[#050505] mt-auto relative z-30">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 group cursor-default">
+                <span class="text-xl font-black tracking-widest uppercase text-offwhite/20 group-hover:text-cobalt transition-colors duration-500">
+                    LEVER
+                </span>
+            </div>
+            <div class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-offwhite/30 text-center md:text-left">
+                &copy; 2026 Lever Coaching System.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS CORE -->
+    <script>
+        // Prevenire salti GSAP su Mobile Scroll
+        ScrollTrigger.config({ ignoreMobileResize: true });
+
+        // --- 1. 1RM CALCULATOR LOGIC ---
+        document.getElementById('calc-btn').addEventListener('click', function() {
+            const exerciseInput = document.getElementById('calc-exercise').value.trim();
+            const weightInput = document.getElementById('calc-weight').value;
+            const repsInput = document.getElementById('calc-reps').value;
+            
+            const titleDisplay = document.getElementById('calc-title');
+            const resultDisplay = document.getElementById('calc-result');
+            const warningDisplay = document.getElementById('calc-warning');
+
+            const weight = parseFloat(weightInput);
+            const reps = parseInt(repsInput);
+
+            warningDisplay.classList.add('hidden');
+
+            if (!weight || !reps || weight <= 0 || reps <= 0 || reps >= 37) {
+                resultDisplay.innerHTML = '-- <span class="text-xl md:text-2xl text-offwhite/30 font-normal tracking-normal">kg</span>';
+                titleDisplay.innerText = "STIMA DEL SISTEMA";
+                warningDisplay.classList.remove('hidden');
+                warningDisplay.textContent = "Errore: Inserisci parametri operativi validi.";
+                return;
+            }
+
+            if (reps > 12) {
+                warningDisplay.textContent = "Nota: La formula di Brzycki disperde precisione oltre le 12 reps.";
+                warningDisplay.classList.remove('hidden');
+            }
+
+            if (exerciseInput) {
+                titleDisplay.innerText = `PROIEZIONE - ${exerciseInput.toUpperCase()}`;
+            } else {
+                titleDisplay.innerText = "PROIEZIONE 1RM";
+            }
+
+            const oneRepMax = weight * (36 / (37 - reps));
+            
+            resultDisplay.style.opacity = 0;
+            resultDisplay.style.transform = "scale(0.95)";
+            
+            setTimeout(() => {
+                resultDisplay.innerHTML = `${Math.round(oneRepMax)} <span class="text-xl md:text-3xl text-cobalt font-normal tracking-normal">kg</span>`;
+                resultDisplay.style.opacity = 1;
+                resultDisplay.style.transform = "scale(1)";
+                resultDisplay.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)";
+            }, 150);
+        });
+
+        // --- 2. THREE.JS INTERACTIVE IMPLEMENTATION ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 14; 
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
+        container.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+
+        const accentLight = new THREE.DirectionalLight(0x0052FF, 3); // Luce blu più forte per design premium
+        accentLight.position.set(-5, -5, -2);
+        scene.add(accentLight);
+
+        const outerGroup = new THREE.Group();
+        scene.add(outerGroup);
+        const group = new THREE.Group();
+        outerGroup.add(group);
+
+        const coreMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xEDEDED, roughness: 0.1, metalness: 0.9, flatShading: true 
+        });
+        const ringMaterial = new THREE.MeshStandardMaterial({
+            color: 0x111111, roughness: 0.4, metalness: 1, wireframe: false
+        });
+
+        const icosahedronGeo = new THREE.IcosahedronGeometry(2, 0);
+        const icosahedron = new THREE.Mesh(icosahedronGeo, coreMaterial);
+        group.add(icosahedron);
+
+        const ring1 = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.03, 16, 100), ringMaterial);
+        ring1.rotation.x = Math.PI / 2;
+        group.add(ring1);
+
+        const ring2 = new THREE.Mesh(new THREE.TorusGeometry(4, 0.015, 16, 100), coreMaterial);
+        ring2.rotation.y = Math.PI / 3;
+        ring2.rotation.x = Math.PI / 6;
+        group.add(ring2);
+
+        const ring3 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.05, 16, 100), ringMaterial);
+        ring3.rotation.y = -Math.PI / 4;
+        group.add(ring3);
+
+        // Effetto Parallax del Mouse (Il Wow Factor Interattivo)
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX) * 0.001;
+            mouseY = (event.clientY - windowHalfY) * 0.001;
+        });
+
+        // Supporto Parallax per Touch (Mobile)
+        document.addEventListener('touchmove', (event) => {
+            if(event.touches.length > 0) {
+                mouseX = (event.touches[0].clientX - windowHalfX) * 0.0015;
+                mouseY = (event.touches[0].clientY - windowHalfY) * 0.0015;
+            }
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Interpolazione fluida per il mouse
+            targetX = mouseX * 0.5;
+            targetY = mouseY * 0.5;
+            
+            // Rotazione base + Effetto Parallax
+            group.rotation.y += 0.003 + (targetX - group.rotation.y) * 0.05;
+            group.rotation.x += 0.001 + (targetY - group.rotation.x) * 0.05;
+            
+            icosahedron.rotation.y -= 0.005;
+            icosahedron.rotation.z += 0.002;
+            
+            // Floating naturale
+            group.position.y = Math.sin(time * 0.8) * 0.15;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize fix per mobile
+        let lastWidth = window.innerWidth;
+        window.addEventListener('resize', () => {
+            if(window.innerWidth !== lastWidth) {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                lastWidth = window.innerWidth;
+            }
+        });
+
+        // --- 3. GSAP & SCROLLTRIGGER ANIMATION ---
+        const lines = [
+            document.getElementById('title-lever'),
+            document.getElementById('title-line1'), 
+            document.getElementById('title-line2')
+        ];
+        
+        lines.forEach(line => {
+            if (!line) return;
+            const text = line.innerText;
+            line.innerHTML = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.innerHTML = char === ' ' ? '&nbsp;' : char;
+                line.appendChild(span);
+            });
+        });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-section",
+                start: "top top",
+                end: "+=1500", 
+                pin: true,     
+                scrub: 1.5, // Reso più burroso lo scroll     
+            }
+        });
+
+        // 1. Esplosione fluida
+        tl.to(".letter", {
+            y: () => (Math.random() - 0.5) * 1200, 
+            x: () => (Math.random() - 0.5) * 1200, 
+            rotationZ: () => (Math.random() - 0.5) * 720, 
+            opacity: 0,
+            stagger: 0.004,
+            ease: "power3.out",
+            duration: 1.2
+        }, 0);
+
+        // 2. Rotazione ingresso Atomo
+        tl.to(outerGroup.rotation, {
+            y: Math.PI * 2,
+            x: Math.PI * 0.1, 
+            ease: "power2.inOut",
+            duration: 1.5
+        }, 0);
+
+        // 3. Testo Background in primo piano
+        tl.to("#scene2-text", {
+            opacity: 1,
+            scale: 1.05,
+            duration: 0.8,
+            ease: "power2.out"
+        }, 0.8);
+
+        // 4. Navigazione che scende dolcemente
+        tl.to("#main-nav", { 
+            y: 0, 
+            opacity: 1, 
+            duration: 0.4,
+            ease: "back.out(1.2)"
+        }, 1.2);
+
+        // 5. Pagina svelata
+        tl.to("#rest-of-page", { 
+            opacity: 1, 
+            duration: 0.5 
+        }, 1.2); 
+
+    </script>
+</body>
+</html>
